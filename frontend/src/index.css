@@ -35,29 +35,32 @@ a {
   --shadow-3: rgba(0, 0, 0, 0.3);
   --shadow-inset: rgba(255, 255, 255, 0.5);
 }
-/* ----------------blue button---------------*/
-.blue_btn{
-  border:none;
-  width: 100%;
+
+/*----Buttons----*/
+.blue_btn {
+  border: none;
   outline: none;
-  padding: 0.5px 7px;
+  background: var(--blue-color);
+  padding: 8.5px 12px;
   border-radius: 7px;
   font-family: inherit;
-  font-weight: 600px;
-  font-size :14px;
-  background: var(--blue-color);
-  color:var(--bg-primary);
-  direction: flex;
-  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   cursor: pointer;
 }
-.forgot_password{
-  color: var(--blue-color);
-  font-size: 14px;
-  cursor: pointer;
-}
-.forgot_password:hover{
-  text-decoration: underline;
+/*----Buttons----*/
+.blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.768);
+  z-index: 99;
+  
 }

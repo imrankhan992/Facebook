@@ -1,16 +1,8 @@
-
-# Ignore node_modules directory
-node_modules/
-
-# Environment variables file
+# Ignore the .env file
 .env
 
-# Logs
-*.log
-
-# OS generated files
-.DS_Store
-
-# Optional: Build output directories (add if applicable)
+# Other files and directories to ignore
+node_modules/
 dist/
 build/
+.DS_Store

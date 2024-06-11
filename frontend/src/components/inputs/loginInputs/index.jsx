@@ -1,24 +1,36 @@
 import { ErrorMessage, useField } from "formik";
 import "./style.css";
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from "react-responsive";
 const LoginInput = ({ placeholder, bottom, ...props }) => {
   const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-width: 850px)'
-  })
+    query: "(min-width: 850px)",
+  });
   const [field, meta] = useField(props);
- 
+
   return (
     <div className="input_wrap">
       {meta.touched && meta.error && !bottom && (
-        <div className={`${isDesktopOrLaptop?"input_error input_error_desktop":"input_error"}`} style={{transform:"translateY(4px)"}}>
+        <div
+          className={`${
+            isDesktopOrLaptop
+              ? "input_error input_error_desktop"
+              : "input_error"
+          }`}
+          style={{ transform: "translateY(4px)" }}
+        >
           {
             // Show error message if the field has been touched and error exists
             meta.touched && meta.error && <ErrorMessage name={field.name} />
-           
           }
-          {
-             meta.touched && meta.error &&( <div className={`${isDesktopOrLaptop?"error_arrow_desktop_right":"error_arrow_top"}`}></div>)
-          }
+          {meta.touched && meta.error && (
+            <div
+              className={`${
+                isDesktopOrLaptop
+                  ? "error_arrow_desktop_right"
+                  : "error_arrow_top"
+              }`}
+            ></div>
+          )}
         </div>
       )}
       <input
@@ -30,14 +42,27 @@ const LoginInput = ({ placeholder, bottom, ...props }) => {
         {...props}
       />
       {meta.touched && meta.error && bottom && (
-        <div className={`${isDesktopOrLaptop?"input_error input_error_desktop":"input_error"}`} style={{transform:"translateY(1px)"}}>
+        <div
+          className={`${
+            isDesktopOrLaptop
+              ? "input_error input_error_desktop"
+              : "input_error"
+          }`}
+          style={{ transform: "translateY(1px)" }}
+        >
           {
             // Show error message if the field has been touched and error exists
             meta.touched && meta.error && <ErrorMessage name={field.name} />
           }
-          {
-             meta.touched && meta.error &&( <div className={`${isDesktopOrLaptop?"error_arrow_desktop_right":"error_arrow_bottom"}`}></div>)
-          }
+          {meta.touched && meta.error && (
+            <div
+              className={`${
+                isDesktopOrLaptop
+                  ? "error_arrow_desktop_right"
+                  : "error_arrow_bottom"
+              }`}
+            ></div>
+          )}
         </div>
       )}
       {meta.touched && meta.error && (

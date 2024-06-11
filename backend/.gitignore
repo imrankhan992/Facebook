@@ -1,4 +1,4 @@
-# Ignore the .env file
+# Ignore the .env file containing sensitive environment variables
 .env
 
 # Other files and directories to ignore

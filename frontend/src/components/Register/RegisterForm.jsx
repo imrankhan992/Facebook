@@ -1,22 +1,39 @@
 import React, { useState } from "react";
 import { Form, Formik } from "formik";
 import RegisterInputs from "../inputs/registerInputs";
-const userInfos = {
-  first_name: "",
-  last_name: "",
-  email: "",
-  password: "",
-  bYear: "",
-  bMonth: "",
-  bDay: "",
-  gender: "",
-};
+import { registrationValidationSchema } from "../../Schema";
+
 const RegisterForm = () => {
+  const userInfos = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    bYear: new Date().getFullYear(),
+    bMonth: new Date().getMonth() + 1,
+    bDay: new Date().getDate(),
+    gender: "",
+  };
   const [user, setUser] = useState(userInfos);
+  // extract all info from the form user
+  const { first_name, last_name, email, password, bYear, bMonth, bDay } = user;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
+  // generate years
+  const years = Array.from(
+    new Array(108),
+    (value, index) => new Date().getFullYear() - index
+  );
+  // generate months
+  const months = Array.from(new Array(12), (values, index) => index + 1);
+  // generate days based on the month and year
+  const getDays = () => {
+    return new Date(bYear, bMonth, 0).getDate();
+  };
+  // generate days
+  const days = Array.from(new Array(getDays()), (values, index) => index + 1);
   return (
     <div className="blur ">
       <div className="register">
@@ -25,7 +42,19 @@ const RegisterForm = () => {
           <span>SignUp</span>
           <span>It's quick and easy</span>
         </div>
-        <Formik>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            first_name,
+            last_name,
+            email,
+            password,
+            bYear,
+            bMonth,
+            bDay,
+          }}
+          validationSchema={registrationValidationSchema}
+        >
           {(formik) => (
             <Form className="register_form">
               <div className="register_line">
@@ -40,6 +69,7 @@ const RegisterForm = () => {
                   placeholder={"Surname"}
                   name="last_name"
                   onChange={handleChange}
+                  onBlur={formik.handleBlur}
                 />
               </div>
               <div className="register_line">
@@ -63,14 +93,26 @@ const RegisterForm = () => {
                   Date of birth <i className="info_icon"></i>
                 </div>
                 <div className="register_grid">
-                  <select name="bDay">
-                    <option>15</option>
+                  <select name="bDay" onChange={handleChange} value={bDay}>
+                    {days?.map((day, index) => (
+                      <option key={index} value={day}>
+                        {day}
+                      </option>
+                    ))}
                   </select>
-                  <select name="bMonth">
-                    <option>15</option>
+                  <select name="bMonth" value={bMonth} onChange={handleChange}>
+                    {months?.map((month, index) => (
+                      <option key={index} value={month}>
+                        {month}
+                      </option>
+                    ))}
                   </select>
-                  <select name="bYear">
-                    <option>15</option>
+                  <select name="bYear" value={bYear} onChange={handleChange}>
+                    {years?.map((year, index) => (
+                      <option key={index} value={year}>
+                        {year}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>

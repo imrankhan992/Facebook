@@ -155,7 +155,7 @@
     font-size: 11px;
     margin-top: 10px;
     color: var(--color-secondary);
-    user-select: none;
+    
     --webkit-user-select:none
 }
 .register_infos span{
@@ -197,5 +197,20 @@
   }
   .login_2_wrap {
     width: 400px;
+  }
+}
+
+@media screen and (min-width: 538px){
+  .register{
+    width: 400px;
+
+  }
+  .register_line{
+    display: flex;
+    flex-direction: row !important;
+  }
+  .register select,
+  .register label{
+    width: 110px;
   }
 }

@@ -1,8 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 }
@@ -54,7 +58,7 @@ a {
   cursor: pointer;
 }
 /*----Buttons----*/
-.blur {
+.bgBlur {
   position: fixed;
   top: 0;
   left: 0;

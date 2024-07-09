@@ -102,6 +102,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 2px 0;
+  width: 100%;
 
 }
 .register_line_header i{

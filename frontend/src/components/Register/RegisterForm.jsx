@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Form, Formik } from "formik";
 import RegisterInputs from "../inputs/registerInputs";
 import { registrationValidationSchema } from "../../Schema";
+import DateOfBirthSelect from "../Login/DateOfBIrthSelect";
+import GenderSelect from "../Login/GenderSelect";
+
 
 const RegisterForm = () => {
   const userInfos = {
@@ -15,8 +18,21 @@ const RegisterForm = () => {
     gender: "",
   };
   const [user, setUser] = useState(userInfos);
+  //date error
+  const [dateError, setDateError] = useState("");
+  // gender error
+  const [genderError, setGenderError] = useState("");
   // extract all info from the form user
-  const { first_name, last_name, email, password, bYear, bMonth, bDay } = user;
+  const {
+    first_name,
+    last_name,
+    email,
+    password,
+    bYear,
+    bMonth,
+    bDay,
+    gender,
+  } = user;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -34,8 +50,9 @@ const RegisterForm = () => {
   };
   // generate days
   const days = Array.from(new Array(getDays()), (values, index) => index + 1);
+
   return (
-    <div className="blur ">
+    <div className="bgBlur ">
       <div className="register">
         <div className="register_header">
           <i className="exit_icon"></i>
@@ -52,8 +69,41 @@ const RegisterForm = () => {
             bYear,
             bMonth,
             bDay,
+            gender,
           }}
           validationSchema={registrationValidationSchema}
+          onSubmit={() => {
+            let currentDate = new Date();
+            let pickDate = new Date(bYear, bMonth - 1, bDay); // bMonth is 0-indexed in JavaScript Date
+
+            // Calculate age in years
+            let age = currentDate.getFullYear() - pickDate.getFullYear();
+            let monthDifference = currentDate.getMonth() - pickDate.getMonth();
+            let dayDifference = currentDate.getDate() - pickDate.getDate();
+
+            // Adjust age if the current date has not yet reached the birthday this year
+            if (
+              monthDifference < 0 ||
+              (monthDifference === 0 && dayDifference < 0)
+            ) {
+              age--;
+            }
+
+            if (age < 14) {
+              setDateError(
+                "It looks like you're not eligible to join Facebook"
+              );
+            } else if (age > 70) {
+              setDateError("You're too old to join Facebook");
+            } else if (gender === "") {
+              setGenderError(
+                "please choose a gender but later you can change who can see it"
+              );
+            }else{
+              setDateError("")
+              setGenderError("")
+            }
+          }}
         >
           {(formik) => (
             <Form className="register_form">
@@ -92,66 +142,13 @@ const RegisterForm = () => {
                 <div className="register_line_header">
                   Date of birth <i className="info_icon"></i>
                 </div>
-                <div className="register_grid">
-                  <select name="bDay" onChange={handleChange} value={bDay}>
-                    {days?.map((day, index) => (
-                      <option key={index} value={day}>
-                        {day}
-                      </option>
-                    ))}
-                  </select>
-                  <select name="bMonth" value={bMonth} onChange={handleChange}>
-                    {months?.map((month, index) => (
-                      <option key={index} value={month}>
-                        {month}
-                      </option>
-                    ))}
-                  </select>
-                  <select name="bYear" value={bYear} onChange={handleChange}>
-                    {years?.map((year, index) => (
-                      <option key={index} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+               <DateOfBirthSelect bDay={bDay} bMonth={bMonth} bYear={bYear}  handleChange={handleChange} months={months} years={years} days={days} dateError={dateError}/>
               </div>
               <div className="register_col">
                 <div className="register_line_header">
                   Gender <i className="info_icon"></i>
                 </div>
-                <div className="register_grid">
-                  <label htmlFor="male">
-                    Male
-                    <input
-                      type="radio"
-                      name="gender"
-                      id="male"
-                      value={"male"}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label htmlFor="female">
-                    Female
-                    <input
-                      type="radio"
-                      name="gender"
-                      id="female"
-                      value={"female"}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label htmlFor="custom">
-                    Custom
-                    <input
-                      type="radio"
-                      name="gender"
-                      id="custom"
-                      value={"custom"}
-                      onChange={handleChange}
-                    />
-                  </label>
-                </div>
+               <GenderSelect handleChange={handleChange} genderError={genderError}/>
               </div>
               <div className="register_infos">
                 People who use our service may have uploaded your contact

@@ -99,13 +99,13 @@ exports.login = async (req, res) => {
         const { _id, first_name, last_name, username, verified, picture } = user;
 
         res.send({
-           
+
             token,
             id: _id,
             first_name,
             last_name,
             username,
-            email:user.email,
+            email: user.email,
             verified,
             picture,
             message: "User logged in successfully",

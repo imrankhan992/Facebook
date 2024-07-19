@@ -65,16 +65,14 @@
   border-radius: 10px;
   padding: 15px;
   padding-bottom: 1rem;
-  width: 350px;
+  width: 420px !important;
   height: fit-content !important;
   color: var(--color-primary);
 }
 .register_header {
   position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-bottom: 10px;
+  flex-direction: column; 
   border-bottom: 1px solid var(--bg-third);
 }
 .register_header i {

@@ -7,16 +7,15 @@
 }
 .input_wrap input{
     width: 100% !important;
-    height:50px;
+    height:40px;
     padding: 10px 5px;
     border: 1px solid var(--bg-third);
-    border-radius: 5px;
     /* margin: 10px 0; */
-    margin-bottom: 10px;
+    margin-bottom:5px;
     outline: none;
     background: var(--bg-primary);
-    font-size: 17px;
-    border-radius: 10px;
+    font-size: 15px;
+    border-radius: 5px;
     /* color: var(--bg-primary); */
 }
 .input_wrap input:focus{
@@ -37,10 +36,12 @@
 .input_error{
     background: #b94a48 !important;
     color: #fff;
-    padding: 15px 10px;
+    padding: 10px 5px;
     position: relative;
-    width: 100%;
-    font-size: 13px;
+    width: 100% !important;
+    font-size: 12px;
+    text-align: start;
+   
     border-radius: 5px;
     margin-bottom: 15px;
 }

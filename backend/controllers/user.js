@@ -46,6 +46,7 @@ exports.register = async (
         sendVerificationEmail(user?.email, user?.first_name, url);
         const token = generateToken({ id: user?._id.toString() }, "7d");
         res.send({
+            success: true,
             token,
             id: user?._id,
             first_name: user?.first_name,

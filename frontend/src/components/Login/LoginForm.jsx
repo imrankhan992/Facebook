@@ -10,7 +10,7 @@ const loginInfos = {
   email: "",
   password: "",
 };
-const LoginForm = () => {
+const LoginForm = ({ setShowRegisterPage}) => {
   const [login, setLogin] = useState(loginInfos);
   const { email, password } = login;
   const handleChange = (e) => {
@@ -60,7 +60,7 @@ const LoginForm = () => {
             Forgotten password?
           </Link>
           <div className="sign_splitter"></div>
-          <button className="blue_btn open_signUp">Create Account</button>
+          <button className="blue_btn open_signUp" onClick={()=>setShowRegisterPage(true)}>Create Account</button>
         </div>
         <Link to="/create_page" className="sign_extra">
           <b>Create a Page</b> for a celebrity, brand or business

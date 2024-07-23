@@ -5,8 +5,11 @@ import { registrationValidationSchema } from "../../Schema";
 import DateOfBirthSelect from "../Login/DateOfBIrthSelect";
 import GenderSelect from "../Login/GenderSelect";
 import { validateAgeAndGender } from "@/validations";
+import registerHook from "@/hooks/registerHook";
 
-const RegisterForm = () => {
+
+const RegisterForm = ({ setShowRegisterPage }) => {
+  const { registerUser, loading } = registerHook();
   const userInfos = {
     first_name: "",
     last_name: "",
@@ -63,11 +66,14 @@ const RegisterForm = () => {
     <div className="bgBlur ">
       <div className="register">
         <div className="register_header !text-start">
-          <i className="exit_icon"></i>
+          <i
+            className="exit_icon"
+            onClick={() => setShowRegisterPage(false)}
+          ></i>
           <span>SignUp</span>
           <span className="mb-3">It's quick and easy</span>
         </div>
-       
+
         <Formik
           enableReinitialize
           initialValues={{
@@ -94,13 +100,26 @@ const RegisterForm = () => {
             } else {
               setDateError("");
               setGenderError("");
-              console.log("Form submitted successfully!");
+              registerUser(
+                first_name,
+                last_name,
+                email,
+                password,
+                bYear,
+                bMonth,
+                bDay,
+                gender
+              );
+              // show toast
+              
+             
             }
           }}
         >
           {(formik) => (
             <Form className="register_form !mt-3">
               <div className="register_line">
+              
                 <RegisterInputs
                   type="text"
                   placeholder={"First name"}
@@ -157,7 +176,8 @@ const RegisterForm = () => {
               </div>
               <div className="register_infos !text-start ">
                 People who use our service may have uploaded your contact
-                information to Facebook. <span className="!mb-2">Learn more.</span>
+                information to Facebook.{" "}
+                <span className="!mb-2">Learn more.</span>
                 <br />
                 By clicking Sign Up, you agree to our{" "}
                 <span>Terms, Privacy Policy</span> and{" "}
@@ -165,9 +185,17 @@ const RegisterForm = () => {
                 from us and can opt out at any time.
               </div>
               <div className="register_btn_wrapper">
-                <button className="blue_btn open_signUp" type="submit">
-                  Sign Up
-                </button>
+                {!loading && (
+                  <button className="blue_btn open_signUp" type="submit">
+                    Sign Up
+                  </button>
+                )}
+
+                {loading && (
+                  <button className="blue_btn open_signUp" type="submit">
+                    Loading...
+                  </button>
+                )}
               </div>
             </Form>
           )}

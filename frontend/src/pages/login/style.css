@@ -5,6 +5,7 @@
 .login_wrap {
   height: 100vh;
   color: var(--color-primary);
+  width: 100%;
 }
 .login_1 {
   width: 300px;

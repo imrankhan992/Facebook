@@ -10,21 +10,21 @@ const DateOfBirthSelect = ({
 }) => {
   return (
     <div className={`register_grid relative  ${dateError ? "mb-11" : ""}`}>
-      <select name="bDay" onChange={handleChange} value={bDay}>
+      <select name="bDay" onChange={handleChange} value={bDay} className="border !border-borderColor">
         {days?.map((day, index) => (
           <option key={index} value={day}>
             {day}
           </option>
         ))}
       </select>
-      <select name="bMonth" value={bMonth} onChange={handleChange}>
+      <select name="bMonth" value={bMonth} onChange={handleChange} className="border !border-borderColor">
         {months?.map((month, index) => (
           <option key={index} value={month}>
             {month}
           </option>
         ))}
       </select>
-      <select name="bYear" value={bYear} onChange={handleChange}>
+      <select name="bYear" value={bYear} onChange={handleChange} className="border !border-borderColor ">
         {years?.map((year, index) => (
           <option key={index} value={year}>
             {year}

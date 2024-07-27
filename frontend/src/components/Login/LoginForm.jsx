@@ -3,6 +3,7 @@ import { Formik, Form } from "formik";
 import { Link } from "react-router-dom";
 import LoginInput from './../inputs/loginInputs/index';
 import { validationSchema } from './../../Schema/index';
+import loginHook from "@/hooks/loginHook";
 
 
 // Define validation schema
@@ -11,6 +12,7 @@ const loginInfos = {
   password: "",
 };
 const LoginForm = ({ setShowRegisterPage}) => {
+  const { loginUser, loading } = loginHook();
   const [login, setLogin] = useState(loginInfos);
   const { email, password } = login;
   const handleChange = (e) => {
@@ -34,6 +36,9 @@ const LoginForm = ({ setShowRegisterPage}) => {
               password,
             }}
             validationSchema={validationSchema}
+            onSubmit={() => {
+              loginUser(email, password);
+            }}
           >
             {(formik) => (
               <Form>
@@ -50,9 +55,16 @@ const LoginForm = ({ setShowRegisterPage}) => {
                   onChange={handleChange}
                   bottom
                 />
-                <button type="submit" className="blue_btn">
+                {
+                  !loading && <button type="submit" className="blue_btn">
                   Log In
                 </button>
+                }
+                {
+                  loading && <button type="submit" className="blue_btn" disabled>
+                  Loading...
+                </button>
+                }
               </Form>
             )}
           </Formik>

@@ -8,7 +8,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 
-let allowed = ["http://localhost:4000", "http://localhost:5173", "another"]
+let allowed = ["http://localhost:3000", "http://localhost:5173", "another"]
 function options(req, res) {
     let temp;
     let origin = req.header("Origin");

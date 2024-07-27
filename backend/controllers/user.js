@@ -110,6 +110,7 @@ exports.login = async (req, res) => {
             verified,
             picture,
             message: "User logged in successfully",
+            success:true
         });
     } catch (error) {
         res.status(500).send({ message: error.message });

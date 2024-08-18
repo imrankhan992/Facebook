@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -9,34 +9,57 @@ import { BsGrid3X3GapFill } from "react-icons/bs";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoMdNotifications } from "react-icons/io";
 import ProfileAvatar from "./ProfileAvatar";
-const Data = [
-  {
-    icon: <BsGrid3X3GapFill className="w-6 h-6" />,
-    tooltip: "Menu",
-  },
-  {
-    icon: <FaFacebookMessenger className="w-6 h-6" />,
-    tooltip: "Messenger",
-  },
-  {
-    icon: <IoMdNotifications className="w-6 h-6" />,
-    tooltip: "Notifications",
-  },
-  {
-    icon: <ProfileAvatar />,
-    tooltip: "Profile",
-  },
-];
 
-const MenuSection = () => {
+const MenuSection = ({ setShowAllMenu, showAllMenu }) => {
+  console.log("MenuSection rendered");
+  console.log("showAllMenu:", showAllMenu);
+
+  const Data = useMemo(
+    () => [
+      {
+        icon: <BsGrid3X3GapFill className="w-6 h-6" />,
+        tooltip: "Menu",
+      },
+      {
+        icon: <FaFacebookMessenger className="w-6 h-6" />,
+        tooltip: "Messenger",
+      },
+      {
+        icon: <IoMdNotifications className="w-6 h-6" />,
+        tooltip: "Notifications",
+      },
+      {
+        icon: <ProfileAvatar />,
+        tooltip: "Profile",
+      },
+    ],
+    []
+  );
+
+  const handleMenuToggle = useCallback(() => {
+   
+    setShowAllMenu((prevState) => !prevState);
+  }, [setShowAllMenu]);
+
+  const handleClick = useCallback(
+    (tooltip) => {
+      console.log("handleClick called with tooltip:", tooltip);
+      if (tooltip === "Menu") {
+        handleMenuToggle();
+      }
+    },
+    [handleMenuToggle]
+  );
+
   return (
-    <div className=" flex items-center justify-center gap-1.5 ">
+    <div className="flex items-center justify-center gap-1.5">
       {Data.map((item, index) => (
-        <TooltipProvider>
+        <TooltipProvider key={index}>
           <Tooltip>
             <TooltipTrigger>
               <div
-                className={`w-10 h-10  relative flex items-center bg-secondaryColorBg justify-center rounded-full ${
+                onClick={() => handleClick(item.tooltip)}
+                className={`w-10 h-10 relative flex items-center bg-secondaryColorBg justify-center rounded-full ${
                   item.tooltip === "Notifications" ? "p-2" : "p-2.5"
                 }`}
               >
@@ -55,6 +78,7 @@ const MenuSection = () => {
           </Tooltip>
         </TooltipProvider>
       ))}
+      
     </div>
   );
 };

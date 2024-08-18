@@ -133,3 +133,47 @@ a {
   z-index: 99;
   
 }
+.border-shadow{
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, and Opera */
+}
+
+
+/* global.css or styles.css */
+@keyframes slide-up-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-fade-in {
+  animation: slide-up-fade-in 0.3s ease-in-out;
+}
+
+@keyframes slide-search-icon{
+  0%{
+    transform: translateX(0);
+  }
+  50%{
+    transform: translateX(-5px);
+  }
+  100%{
+    transform: translateX(0);
+  }
+}
+.slide-search-icon{
+  animation: slide-search-icon 0.5s infinite;
+}

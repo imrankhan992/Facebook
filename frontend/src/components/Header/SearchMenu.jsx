@@ -49,7 +49,7 @@ const SearchMenu = ({ setShowSearchInput }) => {
         </div>
       </form>
       {/* Apply the animation class here */}
-      <div className="bg-white shadow-lg rounded-r-xl rounded-bl-xl w-[25vw] min-h-[30vh] absolute -left-4 z-10 flex justify-center items-center pt-24 animate-slide-up-fade-in">
+      <div className="bg-white shadow-lg rounded-r-xl rounded-bl-xl  min-h-[15vh] absolute inset-0 -left-4 z-10 flex justify-center items-center pt-10 animate-slide-up-fade-in">
         <p>No recent searches</p>
       </div>
     </div>

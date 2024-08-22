@@ -23,7 +23,7 @@ export function HeaderTabs() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`lucide my-1  lucide-house ${
+          className={`lucide my-1  lucide-house w-5 h-5 lg:h-6 lg:w-6 ${
             activeTab === "Home" ? "text-[#0866ff]" : ""
           }  `}
         >
@@ -46,7 +46,7 @@ export function HeaderTabs() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`lucide my-1  lucide-tv-minimal-play ${
+          className={`lucide my-1  lucide-tv-minimal-play w-5 h-5 lg:h-6 lg:w-6 ${
             activeTab === "Video" ? "text-[#0866ff]" : ""
           }  `}
         >
@@ -70,7 +70,7 @@ export function HeaderTabs() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`lucide my-1  lucide-store ${
+          className={`lucide my-1  lucide-store w-5 h-5 lg:h-6 lg:w-6 ${
             activeTab === "MarketPlace" ? "text-[#0866ff]" : ""
           }  `}
         >
@@ -88,7 +88,7 @@ export function HeaderTabs() {
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className={`lucide my-1  lucide-store ${
+          className={`lucide my-1  lucide-store w-5 h-5 lg:h-6 lg:w-6 ${
             activeTab === "Groups" ? "text-[#0866ff]" : ""
           }  `}
           width="26"
@@ -114,10 +114,10 @@ export function HeaderTabs() {
     <TooltipProvider>
       <Tabs
         defaultValue="home"
-        className="flex items-center justify-between "
+        className="flex items-center justify-center overflow-hidden "
         onValueChange={(value) => setActiveTab(value)}
       >
-        <TabsList className="flex w-full  justify-between items-center bg-transparent  h-14">
+        <TabsList className="flex w-full lg:gap-8  items-center bg-transparent justify-between  lg:h-14  overflow-hidden">
           {data.map((item, index) => (
             <Tooltip>
               <TooltipTrigger>
@@ -125,8 +125,8 @@ export function HeaderTabs() {
                   value={item.value}
                   className={
                     activeTab === item.value
-                      ? "border-b-2 border-[#0866ff] mt-1 py-2 rounded-none !shadow-none px-14 "
-                      : "px-14 hover:bg-secondaryColorBg rounded-xl "
+                      ? "border-b-2 border-[#0866ff] lg:mt-1 lg:py-2 rounded-none !shadow-none lg:px-14 "
+                      : "lg:px-14 hover:bg-secondaryColorBg rounded-xl "
                   }
                 >
                   {item.icons}
@@ -137,10 +137,8 @@ export function HeaderTabs() {
               </TooltipContent>
             </Tooltip>
           ))}
-         
         </TabsList>
-        <TabsContent value="home"></TabsContent>
-        <TabsContent value="video"></TabsContent>
+      
       </Tabs>
     </TooltipProvider>
   );

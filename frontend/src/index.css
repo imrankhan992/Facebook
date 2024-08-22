@@ -29,7 +29,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --border-color: 0.61%	0.06%	0.81%;
+    --border-color: 0.61% 0.06% 0.81%;
   }
 
   .dark {
@@ -60,12 +60,6 @@
   }
 }
 
-
-
-
-
-
-
 * {
   padding: 0;
   margin: 0;
@@ -84,7 +78,7 @@ a {
 }
 :root {
   --bg-primary: #fff;
-  --bg-secondary: #F5F6F7;
+  --bg-secondary: #f5f6f7;
   --bg-third: #e4e6eb;
   --bg-forth: #f0f2f5;
   --color-primary: #050505;
@@ -131,23 +125,21 @@ a {
   bottom: 0;
   background: rgba(255, 255, 255, 0.768);
   z-index: 99;
-  
 }
-.border-shadow{
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+.border-shadow {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari, and Opera */
+  display: none; /* Chrome, Safari, and Opera */
 }
 
-
-/* global.css or styles.css */
 @keyframes slide-up-fade-in {
   0% {
     opacity: 0;
@@ -163,17 +155,48 @@ a {
   animation: slide-up-fade-in 0.3s ease-in-out;
 }
 
-@keyframes slide-search-icon{
-  0%{
+@keyframes slide-search-icon {
+  0% {
     transform: translateX(0);
   }
-  50%{
+  50% {
     transform: translateX(-5px);
   }
-  100%{
+  100% {
     transform: translateX(0);
   }
 }
-.slide-search-icon{
+.slide-search-icon {
   animation: slide-search-icon 0.5s infinite;
+}
+
+/* slide right animation */
+@keyframes slide-right {
+  /* slide like facebook do */
+  0% {
+    transform: translateX(30%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.right_side {
+  animation: slide-right 0.2s ease-in-out;
+}
+/* left side */
+@keyframes slide-left {
+  /* slide like facebook do */
+  0% {
+    transform: translateX(-30%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.left_side {
+  animation: slide-left 0.2s ease-in-out;
 }

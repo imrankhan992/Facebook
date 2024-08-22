@@ -10,18 +10,27 @@ import { FaFacebookMessenger } from "react-icons/fa";
 import { IoMdNotifications } from "react-icons/io";
 import ProfileAvatar from "./ProfileAvatar";
 
-const MenuSection = ({ setShowAllMenu, showAllMenu }) => {
+const MenuSection = ({
+  setShowAllMenu,
+  showAllMenu,
+  setShowUserMenu,
+  showUserMenu,
+}) => {
   console.log("MenuSection rendered");
   console.log("showAllMenu:", showAllMenu);
 
   const Data = useMemo(
     () => [
       {
-        icon: <BsGrid3X3GapFill className="w-6 h-6" />,
+        icon: (
+          <BsGrid3X3GapFill
+            className={`w-6 h-6 ${showAllMenu ? "text-blue-500" : ""}`}
+          />
+        ),
         tooltip: "Menu",
       },
       {
-        icon: <FaFacebookMessenger className="w-6 h-6" />,
+        icon: <FaFacebookMessenger className="lg:w-6 lg:h-6 h-4 w-4" />,
         tooltip: "Messenger",
       },
       {
@@ -33,22 +42,24 @@ const MenuSection = ({ setShowAllMenu, showAllMenu }) => {
         tooltip: "Profile",
       },
     ],
-    []
+    [showAllMenu]
   );
 
   const handleMenuToggle = useCallback(() => {
-   
     setShowAllMenu((prevState) => !prevState);
-  }, [setShowAllMenu]);
+  }, [setShowAllMenu, showAllMenu]);
 
   const handleClick = useCallback(
     (tooltip) => {
-      console.log("handleClick called with tooltip:", tooltip);
+      
       if (tooltip === "Menu") {
         handleMenuToggle();
       }
+      if (tooltip === "Profile") {
+        setShowUserMenu((prevState) => !prevState);
+      }
     },
-    [handleMenuToggle]
+    [handleMenuToggle, setShowUserMenu, showUserMenu]
   );
 
   return (
@@ -59,7 +70,7 @@ const MenuSection = ({ setShowAllMenu, showAllMenu }) => {
             <TooltipTrigger>
               <div
                 onClick={() => handleClick(item.tooltip)}
-                className={`w-10 h-10 relative flex items-center bg-secondaryColorBg justify-center rounded-full ${
+                className={`lg:w-10 lg:h-10 w-8 h-8 relative flex items-center bg-secondaryColorBg justify-center rounded-full ${
                   item.tooltip === "Notifications" ? "p-2" : "p-2.5"
                 }`}
               >
@@ -78,7 +89,6 @@ const MenuSection = ({ setShowAllMenu, showAllMenu }) => {
           </Tooltip>
         </TooltipProvider>
       ))}
-      
     </div>
   );
 };

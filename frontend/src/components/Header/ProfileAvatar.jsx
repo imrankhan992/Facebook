@@ -1,12 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSelector } from "react-redux";
 
 const ProfileAvatar = () => {
+  const user = useSelector((state) => state.user);
   return (
-    <Avatar>
-      <AvatarImage
-        src="https://avatar.iran.liara.run/public/boy"
-        alt="@Your profile"
-      />
+    <Avatar  className="w-7 h-7">
+      <AvatarImage src={`${user?.picture}`} alt="@Your profile" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   );

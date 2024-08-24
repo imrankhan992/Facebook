@@ -114,14 +114,15 @@ export function HeaderTabs() {
     <TooltipProvider>
       <Tabs
         defaultValue="home"
-        className="flex items-center justify-center overflow-hidden "
+        className="flex items-center  overflow-hidden order-3  w-full lg:w-auto lg:order-none justify-between"
         onValueChange={(value) => setActiveTab(value)}
       >
-        <TabsList className="flex w-full lg:gap-8  items-center bg-transparent justify-between  lg:h-14  overflow-hidden">
+        <TabsList className="flex w-full lg:gap-8  items-center bg-transparent justify-between  lg:h-14  ">
           {data.map((item, index) => (
             <Tooltip>
               <TooltipTrigger>
                 <TabsTrigger
+                  key={index}
                   value={item.value}
                   className={
                     activeTab === item.value

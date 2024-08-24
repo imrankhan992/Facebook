@@ -1,0 +1,30 @@
+/* Custom styles for navigation buttons */
+.swiper-button-prev, .swiper-button-next {
+    background-color: white; /* Background color */
+    border-radius: 50%;    /* Fully rounded */
+    width: 50px;           /* Adjust width of the button */
+    height: 50px;          /* Adjust height of the button */
+    display: flex;         /* Center icon */
+    align-items: center;   /* Center icon vertically */
+    justify-content: center; /* Center icon horizontally */
+    color: #606266;          /* Icon color */
+    font-size: 16px;       /* Adjust icon size */
+    font-weight: bold;     /* Make icon bold */
+    z-index: 10;           /* Ensure button is above content */
+}
+
+/* Adjust the icon font size and weight if necessary */
+.swiper-button-prev::after, .swiper-button-next::after {
+    font-family: 'swiper-icons'; 
+    font-size: inherit;   /* Inherit font size */
+    font-weight: inherit; /* Inherit font weight */
+}
+
+/* Position navigation buttons inside the slider */
+.swiper-button-prev {
+    left: 25px;            /* Adjust left position */
+}
+
+.swiper-button-next {
+    right: 25px;           /* Adjust right position */
+}

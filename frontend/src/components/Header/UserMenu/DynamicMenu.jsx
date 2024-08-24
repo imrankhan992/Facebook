@@ -1,4 +1,3 @@
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { menuConfig } from "./menuConfig";
 
 export const DynamicMenu = ({

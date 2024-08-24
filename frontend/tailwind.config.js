@@ -26,6 +26,8 @@ module.exports = {
         borderColor:"#65676B",
         secondaryColorBg:"#F0F2F5",
         secondaryColor2:"#F7F8FA",
+        blueColor:"#075CE5",
+        hover2:"#E4E6E9",
         primary: {
           DEFAULT: "#F5F6F7",
           foreground: "hsl(var(--primary-foreground))",

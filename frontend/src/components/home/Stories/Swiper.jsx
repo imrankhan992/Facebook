@@ -8,53 +8,12 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "./style.css"; // Import your custom styles here
 import { Plus } from "@/svg";
+import { storiesData } from "@/data/storiesData";
 
 export default function SwiperIk() {
   const swiperRef = useRef(null);
 
-  const storiesData = [
-    {
-      id: 1,
-      name: "Beauty Nature",
-      image: "https://cdn.pixabay.com/photo/2024/02/15/14/31/donkey-8575524_1280.jpg",
-    },
-    {
-      id: 2,
-      name: "Adventure",
-      image: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg",
-    },
-    {
-      id: 1,
-      name: "Beauty Nature",
-      image: "https://cdn.pixabay.com/photo/2024/02/15/14/31/donkey-8575524_1280.jpg",
-    },
-    {
-      id: 2,
-      name: "Adventure",
-      image: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg",
-    },
-    {
-      id: 1,
-      name: "Beauty Nature",
-      image: "https://cdn.pixabay.com/photo/2024/02/15/14/31/donkey-8575524_1280.jpg",
-    },
-    {
-      id: 2,
-      name: "Adventure",
-      image: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg",
-    },
-    {
-      id: 1,
-      name: "Beauty Nature",
-      image: "https://cdn.pixabay.com/photo/2024/02/15/14/31/donkey-8575524_1280.jpg",
-    },
-    {
-      id: 2,
-      name: "Adventure",
-      image: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg",
-    },
-    // Add more stories as needed
-  ];
+ 
 
   return (
     <>
@@ -62,7 +21,7 @@ export default function SwiperIk() {
         modules={[ Navigation, Pagination]}
         ref={swiperRef}
         slidesPerView={4}
-        spaceBetween={30} // Adjusted space between slides
+        spaceBetween={30} 
         navigation={{
           prevEl: '.swiper-button-prev',
           nextEl: '.swiper-button-next'
@@ -72,7 +31,7 @@ export default function SwiperIk() {
       >
         {/* Create Story */}
         <SwiperSlide  key="create-story">
-          <div className="flex-none w-36 h-60 rounded-xl relative stories-shadow cursor-pointer overflow-hidden bg-white group hover:bg-hover2">
+          <div className="flex-none w-20 mt-16 md:mt-0 h-32 lg:w-36 lg:h-60  rounded-xl relative stories-shadow cursor-pointer overflow-hidden bg-white group hover:bg-hover2">
             <div className="relative w-full h-[80%] overflow-hidden rounded-t-xl flex items-center justify-center">
               <img
                 src="https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg"
@@ -97,7 +56,7 @@ export default function SwiperIk() {
         {/* Individual Stories */}
         {storiesData.map((story) => (
           <SwiperSlide key={story.id} virtualIndex={story.id}>
-            <div className="flex-none w-36 h-60 rounded-xl relative stories-shadow cursor-pointer overflow-hidden bg-white group hover:bg-hover2">
+            <div className="flex-none w-20 mt-16 md:mt-0 h-32 md:w-36 md:h-60 rounded-xl relative stories-shadow cursor-pointer overflow-hidden bg-white group hover:bg-hover2">
               <div className="relative w-full h-full overflow-hidden rounded-t-xl flex items-center justify-center">
                 <img
                   src={story.image}

@@ -1,0 +1,48 @@
+import React from "react";
+import ProfileAvatar from "./../../Header/ProfileAvatar";
+import { useSelector } from "react-redux";
+import { Feeling, LiveVideo, Photo } from "@/svg";
+
+const CreatePost = () => {
+  const user = useSelector((state) => state.user);
+  return (
+    <div className="w-full flex items-center justify-center">
+      <div className="bg-white p-4 min-w-[80%] rounded-lg border-shadow">
+        <div className="flex items-center justify-start gap-3 w-full">
+          <ProfileAvatar />
+          <div className="lg:h-11 h-10   rounded-full w-full px-5 flex items-center justify-start gap-3 bg-secondaryColorBg">
+            {/* Responsive text size using clamp */}
+            <span className="text-textColor break-words" style={{ fontSize: 'clamp(0.6rem, 2vw, 1.1rem)' }}>
+              What's on your mind, {user?.first_name || "Guest"}?
+            </span>
+          </div>
+        </div>
+        <div className="w-full h-[0.9px] bg-secondaryColorBg mt-2.5" />
+        <div className="grid grid-cols-3 pt-3 flex-wrap">
+          <div className="flex items-center justify-center gap-2">
+            <div style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)' }}>
+              <LiveVideo color={"#E42645"}  />
+            </div>
+            <span className="text-textColor font-semibold" style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)' }}>
+              Live Video
+            </span>
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <Photo color={"#41B35D"}  />
+            <span className="text-textColor font-semibold" style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)' }}>
+              Photo/Video
+            </span>
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <Feeling color={"#EAB026"}  />
+            <span className="text-textColor font-semibold" style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)' }}>
+              Feeling/Activity
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CreatePost;

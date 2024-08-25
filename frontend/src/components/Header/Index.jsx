@@ -93,7 +93,7 @@ const Index = ({ children }) => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 ">{children}</div>
+      <div className="flex flex-1 items-center justify-center w-full">{children}</div>
     </div>
   );
 };

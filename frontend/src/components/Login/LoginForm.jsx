@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
-import { Link } from "react-router-dom";
+
 import LoginInput from './../inputs/loginInputs/index';
 import { validationSchema } from './../../Schema/index';
 import loginHook from "@/hooks/loginHook";
+import { Link } from "@tanstack/react-router";
 
 
 // Define validation schema

@@ -40,10 +40,11 @@ exports.register = async (
             bMonth,
             bDay,
         });
-        await user.save();
+        
         const emailVerificationToken = generateToken({ id: user?._id.toString() }, "30m");
         const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
         sendVerificationEmail(user?.email, user?.first_name, url);
+        await user.save();
         const token = generateToken({ id: user?._id.toString() }, "7d");
         res.send({
             success: true,
@@ -64,15 +65,20 @@ exports.register = async (
 
 exports.activateToken = async ({ body: { token }, res, next }) => {
     try {
+        const validateUser = req?.user?.id;
+        
         if (!token) throw new Error("Invalid token");
-        const verifyToken = jwt.verify(token, process.env.TOKEN_SECRET)
-        const user = await User.findById(verifyToken.id);
+        const verifyToken = jwt.verify(token, process.env.TOKEN_SECRET);
+        if(validateUser !== verifyToken?.id) throw new Error("Your are not authorized to activate this account");
+       
+        const user = await User.findById(verifyToken?.id);
         if (!user) throw new Error("Invalid token");
         if (user.verified) throw new Error("Email already activated");
         user.verified = true;
         await user.save();
         res.status(200).json({ message: "Account has been activated successfully" });
     } catch (error) {
+         console.log(error);
         res.status(500).send({ message: error.message });
     }
 }

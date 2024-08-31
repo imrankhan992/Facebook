@@ -28,6 +28,7 @@ module.exports = {
         secondaryColor2:"#F7F8FA",
         blueColor:"#075CE5",
         hover2:"#E4E6E9",
+        hover1:"#F2F2F2",
         textColor:"#606266",
         primary: {
           DEFAULT: "#F5F6F7",

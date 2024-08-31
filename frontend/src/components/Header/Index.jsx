@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+
 import { Search } from "lucide-react";
 import facebookLogo from "/icons/icon.png";
 
@@ -13,6 +13,7 @@ import MenuSection from "./MenuSection";
 import SearchMenu from "./SearchMenu";
 import AllMenu from "./AllMenu";
 import UserMenu from "./UserMenu/Index";
+import { Link } from "@tanstack/react-router";
 
 const Index = ({ children }) => {
   const [showSearchInput, setShowSearchInput] = useState(false);

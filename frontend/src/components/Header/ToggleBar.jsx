@@ -2,7 +2,7 @@ import React from 'react'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {  Menu, Package2 } from "lucide-react";
 import { Button } from '../ui/button';
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 
 const ToggleBar = () => {
   return (

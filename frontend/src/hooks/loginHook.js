@@ -1,14 +1,15 @@
 import ErrorToast from '@/components/ui/ErrorToast';
 import { encryptData } from '@/helpers/encryptionData';
 import axiosInstance from '@/utils/axios';
+import { useRouter } from '@tanstack/react-router';
 import Cookies from 'js-cookie';
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+
 
 const loginHook = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const router = useRouter()
     const [loading, setLoading] = useState(false)
     const loginUser = async (email, password) => {
         setLoading(true)
@@ -23,10 +24,12 @@ const loginHook = () => {
                     expires: 7,
                 });
                 dispatch({ type: "LOGIN", payload: data });
-                navigate("/")
+                router.navigate({
+                    to: "/"
+                })
             }
         } catch (error) {
-            console.log(error)
+            
             ErrorToast(error?.response?.data?.message);
         } finally {
             setLoading(false)

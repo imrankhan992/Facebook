@@ -13,9 +13,11 @@ import {
   createRootRoute,
   Outlet,
 } from "@tanstack/react-router";
-import Home from "./components/home/Index"; // Assuming this is your home component
-import { Toaster } from "./components/ui/sonner"; // Toaster component
+import Home from "./components/home/Index";
 import Login from "./pages/login";
+import AuthRoute from "./routes/AuthRoute";
+import { Toaster } from "./components/ui/sonner"; 
+import ActivateEmailHome from "./components/home/Activate/Index";
 
 // Create Redux store and React Query client
 const store = createStore(rootReducer, composeWithDevTools());
@@ -30,21 +32,28 @@ const rootRoute = createRootRoute({
   ),
 });
 
-
+// Home route (protected)
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: () => <Home />, 
+  component: () => <AuthRoute component={Home} requiresAuth={true} />, // Protected route
 });
 
+// Login route (public)
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
-  component: () => <Login />, 
+  component: () => <AuthRoute component={Login} requiresAuth={false} />, // Public route
 });
+// Activate Email route (public) using the useParams hook
+const activateEmailRoute = createRoute({
 
-// Add the home route to the root route
-const routeTree = rootRoute.addChildren([homeRoute,loginRoute]);
+  getParentRoute: () => rootRoute,
+  path: "/activate/$token",
+  component: () => <AuthRoute component={ActivateEmailHome} requiresAuth={true} />, // Public route
+});
+// Add routes to the root route
+const routeTree = rootRoute.addChildren([homeRoute, loginRoute,activateEmailRoute]);
 
 // Create the router with the route tree
 const router = createRouter({ routeTree });
@@ -56,9 +65,7 @@ if (rootElement) {
   root.render(
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router}>
-         
-        </RouterProvider>
+        <RouterProvider router={router} />
         <Toaster />
       </QueryClientProvider>
     </Provider>

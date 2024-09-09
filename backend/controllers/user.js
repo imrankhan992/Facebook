@@ -40,7 +40,7 @@ exports.register = async (
             bMonth,
             bDay,
         });
-        
+
         const emailVerificationToken = generateToken({ id: user?._id.toString() }, "30m");
         const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
         sendVerificationEmail(user?.email, user?.first_name, url);
@@ -63,14 +63,14 @@ exports.register = async (
     }
 };
 
-exports.activateToken = async ({ body: { token }, res, next }) => {
+exports.activateToken = async (req, res, next) => {
     try {
-        const validateUser = req?.user?.id;
-        
+        const validateUser = req?.user;
+        const token = req.body.token;
         if (!token) throw new Error("Invalid token");
         const verifyToken = jwt.verify(token, process.env.TOKEN_SECRET);
-        if(validateUser !== verifyToken?.id) throw new Error("Your are not authorized to activate this account");
-       
+        if (validateUser !== verifyToken?.id) throw new Error("Your are not authorized to activate this account");
+
         const user = await User.findById(verifyToken?.id);
         if (!user) throw new Error("Invalid token");
         if (user.verified) throw new Error("Email already activated");
@@ -78,7 +78,7 @@ exports.activateToken = async ({ body: { token }, res, next }) => {
         await user.save();
         res.status(200).json({ message: "Account has been activated successfully" });
     } catch (error) {
-         console.log(error);
+        console.log(error);
         res.status(500).send({ message: error.message });
     }
 }
@@ -116,9 +116,24 @@ exports.login = async (req, res) => {
             verified,
             picture,
             message: "User logged in successfully",
-            success:true
+            success: true
         });
     } catch (error) {
         res.status(500).send({ message: error.message });
+    }
+};
+// resend verification email
+exports.resendVerificationEmail = async (req, res) => {
+    try {
+        const id = req?.user
+        const user = await User.findById(id);
+        if (!user) throw new Error("User not found");
+        if (user.verified) throw new Error("Email already verified");
+        const emailVerificationToken = generateToken({ id: user._id.toString() }, "30m");
+        const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
+        sendVerificationEmail(user.email, user.first_name, url);
+        res.send({ success:true,message: "Verification email sent to your email" });
+    } catch (error) {
+        res.status(500).send({ success:false,message: error.message });
     }
 };

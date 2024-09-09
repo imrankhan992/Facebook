@@ -1,7 +1,7 @@
 // Encryption helper functions
 export const encryptData = (data) => {
+  if(!data) return null;
   const encodedData = btoa(JSON.stringify(data));
-
   return encodedData;
 };
 

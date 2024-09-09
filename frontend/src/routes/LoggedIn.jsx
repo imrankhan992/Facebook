@@ -1,10 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import { Navigate, Outlet } from 'react-router-dom';
-
-const LoggedIn = () => {
+import { Navigate } from '@tanstack/react-router';
+const LoggedIn = ({ component: Component }) => {
     const user = useSelector(state => state.user);
-    return user ? <Navigate to="/" /> : <Outlet />;
+    return user ? <Navigate to={"/"}/>: <Component />;
 }
 
 export default LoggedIn

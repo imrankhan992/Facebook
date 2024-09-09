@@ -1,7 +1,7 @@
 import Login from "./pages/login";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import NotLoggedIn from "./routes/NotLoggedIn";
+import NotLoggedIn from "./routes/AuthRoute";
 import LoggedIn from "./routes/LoggedIn";
 import Home from "./components/home/Index";
 import ActivateEmailHome from "./components/home/Activate/Index";

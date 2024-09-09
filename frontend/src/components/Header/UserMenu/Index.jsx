@@ -2,8 +2,13 @@ import { useRef, useState } from "react";
 import { DynamicMenu } from "./DynamicMenu";
 import { menuConfig } from "./menuConfig";
 import useClickOutSide from "@/helpers/clickOutSide";
-
+import { useNavigate } from "@tanstack/react-router";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
 export default function UserMenu({ setShowUserMenu }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const userMenuRef = useRef(null);
   const [currentMenu, setCurrentMenu] = useState("main");
   const [menuHistory, setMenuHistory] = useState([]);
@@ -35,6 +40,15 @@ export default function UserMenu({ setShowUserMenu }) {
     setCurrentMenu(previousMenu || "main");
   };
 
+  const handleLogout = () => {
+    Cookies.remove("user");
+    dispatch({
+      type: "LOGOUT",
+    });
+    navigate({
+      to: "/",
+    });
+  };
   return (
     <div
       className="absolute -left-48 min-w-[350px] rounded-lg bg-white border-shadow"
@@ -42,6 +56,7 @@ export default function UserMenu({ setShowUserMenu }) {
     >
       <div className="p-4">
         <DynamicMenu
+        handleLogout={handleLogout}
           currentMenu={currentMenu}
           navigateTo={navigateTo}
           goBack={goBack}

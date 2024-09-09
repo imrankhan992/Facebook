@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ArrowDown1 from "../../svg/arrowDow1";
 import Stories from "./Stories/Index";
 import CreatePost from "./Posts/CreatePost";
+import ResendEmailVerification from "./Activate/ResendEmailVerification";
 
 const Home = () => {
   const user = useSelector((state) => state.user);
@@ -64,6 +65,7 @@ const Home = () => {
         {/* Middle Section */}
         <div className="flex-1 overflow-y-auto px-4  pt-16 bg-[#F0F2F5]  scrollbar-hide h-screen">
         <Stories />
+       {!user?.verified&& <ResendEmailVerification />}
         <CreatePost />
         </div>
 

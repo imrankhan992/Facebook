@@ -4,7 +4,7 @@ export const menuConfig = {
         { label: 'Help and Support', action: 'helpSupport', icon: "help_filled_icon", link: "/help" },
         { label: 'Feedback', action: 'feedback', icon: "report_filled_icon", link: "/feedback" },
         { label: 'Display and Accessibility', action: 'displayAccessibility', icon: "dark_filled_icon", link: "/display-accessibility" },
-        { label: 'Logout', action: 'logout', icon: "logout_filled_icon", link: "/logout" },
+        { label: 'Logout', action: 'logout', icon: "logout_filled_icon" },
     ],
     settingsPrivacy: [
         { label: 'Privacy Checkup', action: 'privacyCheckup' },

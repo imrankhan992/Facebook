@@ -1,15 +1,15 @@
 import { menuConfig } from "./menuConfig";
 
 export const DynamicMenu = ({
+  handleLogout,
   currentMenu,
   navigateTo,
   goBack,
   currentLabel,
   direction,
 }) => (
-  <div
-    className={direction === "forward" ? "right_side" : "left_side"}
-  >
+  
+  <div className={direction === "forward" ? "right_side" : "left_side"}>
     <div>
       {currentMenu !== "main" && (
         <div className="flex items-center justify-start gap-3 pb-4 ">
@@ -53,9 +53,16 @@ export const DynamicMenu = ({
               <i className={item.icon}></i>
             </div>
             <div>
-              <div className="font-semibold text-[16.5px] text-black">
-                {item.label}
-              </div>
+              {item.action !== "logout" && (
+                <div className="font-semibold text-[16.5px] text-black">
+                  {item.label}
+                </div>
+              )}
+              {item.action === "logout" && (
+                <div className="font-semibold text-[16.5px] text-black" onClick={()=>{handleLogout()}}>
+                  {item.label}
+                </div>
+              )}
             </div>
             {menuConfig[item.action] && (
               <div className="absolute right-2">

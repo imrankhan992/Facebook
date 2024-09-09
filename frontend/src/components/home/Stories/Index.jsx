@@ -16,7 +16,7 @@ const Stories = () => {
   const swiperRef = useRef(null);
 
   return (
-    <div className="relative flex items-center p-4 rounded-xl">
+    <div className="relative flex items-center py-6 rounded-xl">
       <Swiper
         modules={[ Navigation, Pagination]}
         ref={swiperRef}

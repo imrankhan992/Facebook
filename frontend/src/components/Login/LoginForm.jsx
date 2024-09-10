@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
 
-import LoginInput from './../inputs/loginInputs/index';
-import { validationSchema } from './../../Schema/index';
+import LoginInput from "./../inputs/loginInputs/index";
+import { validationSchema } from "./../../Schema/index";
 import loginHook from "@/hooks/loginHook";
 import { Link } from "@tanstack/react-router";
-
 
 // Define validation schema
 const loginInfos = {
   email: "",
   password: "",
 };
-const LoginForm = ({ setShowRegisterPage}) => {
+const LoginForm = ({ setShowRegisterPage }) => {
   const { loginUser, loading } = loginHook();
   const [login, setLogin] = useState(loginInfos);
   const { email, password } = login;
@@ -56,24 +55,30 @@ const LoginForm = ({ setShowRegisterPage}) => {
                   onChange={handleChange}
                   bottom
                 />
-                {
-                  !loading && <button type="submit" className="blue_btn">
-                  Log In
-                </button>
-                }
-                {
-                  loading && <button type="submit" className="blue_btn" disabled>
-                  Loading...
-                </button>
-                }
+                {!loading && (
+                  <button type="submit" className="blue_btn">
+                    Log In
+                  </button>
+                )}
+                {loading && (
+                  <button type="submit" className="blue_btn" disabled>
+                    Loading...
+                  </button>
+                )}
               </Form>
             )}
           </Formik>
-          <Link to="/forget" className="forgot_password">
+          <Link to="/login/$somewhereId"  params={{ somewhereId: 'identify' }}
+      search={(prev) => ({ ...prev, ctx: 'recover' })} className="forgot_password">
             Forgotten password?
           </Link>
           <div className="sign_splitter"></div>
-          <button className="blue_btn open_signUp" onClick={()=>setShowRegisterPage(true)}>Create Account</button>
+          <button
+            className="blue_btn open_signUp"
+            onClick={() => setShowRegisterPage(true)}
+          >
+            Create Account
+          </button>
         </div>
         <Link to="/create_page" className="sign_extra">
           <b>Create a Page</b> for a celebrity, brand or business

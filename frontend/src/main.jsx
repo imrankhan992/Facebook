@@ -18,6 +18,7 @@ import Login from "./pages/login";
 import AuthRoute from "./routes/AuthRoute";
 import { Toaster } from "./components/ui/sonner"; 
 import ActivateEmailHome from "./components/home/Activate/Index";
+import ResetIndex from "./components/Reset/Index";
 
 // Create Redux store and React Query client
 const store = createStore(rootReducer, composeWithDevTools());
@@ -52,8 +53,15 @@ const activateEmailRoute = createRoute({
   path: "/activate/$token",
   component: () => <AuthRoute component={ActivateEmailHome} requiresAuth={true} />, // Public route
 });
+// reset  password
+const forgotPasswordRoute = createRoute({
+
+  getParentRoute: () => rootRoute,
+  path: "/login/$somewhereId",
+  component: () => <AuthRoute component={ResetIndex} requiresAuth={false} />, 
+});
 // Add routes to the root route
-const routeTree = rootRoute.addChildren([homeRoute, loginRoute,activateEmailRoute]);
+const routeTree = rootRoute.addChildren([homeRoute, loginRoute,activateEmailRoute,forgotPasswordRoute]);
 
 // Create the router with the route tree
 const router = createRouter({ routeTree });

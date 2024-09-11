@@ -4,8 +4,26 @@ import { Button } from "../ui/button";
 import { Link } from "@tanstack/react-router";
 import { formOptions, useForm } from "@tanstack/react-form";
 import { Input } from "../ui/input";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { reset_password_find_account } from "@/apis/api";
 
 const ResetIndex = () => {
+  const {isError,error,mutate} = useMutation({
+    mutationFn: reset_password_find_account,
+    onMutate: (variables) => {
+      // A mutation is about to happen!
+      // Optionally return a context containing data to use when for example rolling back
+      return {};
+    },
+    onError: (error, variables, context) => {
+      // An error happened!
+      // Use the context to roll back
+    },
+    onSuccess: (data, variables, context) => {
+      // The mutation was successful!
+      // Use the context to do something
+    },
+  })
   const formOpts = formOptions({
     defaultValues: {
       email: "",
@@ -14,7 +32,7 @@ const ResetIndex = () => {
   const { Field, Subscribe, reset, handleSubmit } = useForm({
     ...formOpts,
     onSubmit: (values) => {
-      console.log(values);
+      mutate(values?.value?.email)
     },
   });
 
@@ -37,8 +55,8 @@ const ResetIndex = () => {
       {/* Reset Section */}
       <div className="flex flex-1 justify-center items-center">
         <div className="bg-white border-shadow w-[90vw]  md:w-[40vw] md:max-w-[500px] rounded-md ">
-          <div className="px-4 py-2 border-b">
-            <h2 className="text-2xl  mb-3 font-semibold">Find Your Account</h2>
+          <div className="px-4 pt-4 pb-2  border-b">
+            <h2 className="text-2xl   font-semibold text-[#162643]">Find Your Account</h2>
           </div>
           <form
             className="px-4 py-6 flex justify-center gap-2 flex-col"
@@ -48,6 +66,12 @@ const ResetIndex = () => {
               handleSubmit();
             }}
           >
+            {isError && <div className="bg-[#FFEBE8] p-3 border border-[#DD3C10]">
+              <h2 className="text-[15px] font-bold text-black">No search results</h2>
+              <p className="text-black text-sm font-normal">
+                {error?.message}
+                </p>
+              </div>}
             <p className="text-black mb-5 text-lg tracking-tight leading-6">
               Please enter your email address or mobile number to search for
               your account.
@@ -95,22 +119,17 @@ const ResetIndex = () => {
                 selector={(state) => [state.canSubmit, state.isSubmitting]}
                 children={([canSubmit, isSubmitting]) => (
                   <>
-                   <Link to={"/login"}
-                  
-                   >
-                   <Button
-                      
-                      className="bg-secondaryColorBg text-black"
-                    >
-                      Cancel
-                    </Button>
-                   </Link>
+                    <Link to={"/login"}>
+                      <Button className="bg-secondaryColorBg text-black px-6 font-semibold text-[17px] border">
+                        Cancel
+                      </Button>
+                    </Link>
                     <Button
                       type="submit"
-                      className="bg-blueColor hover:bg-blueColor"
+                      className="bg-blueColor hover:bg-blueColor px-6 font-semibold text-[17px]"
                       disabled={!canSubmit}
                     >
-                      {isSubmitting ? "Loading..." : "Submit"}
+                      {isSubmitting ? "Loading..." : "Search"}
                     </Button>
                   </>
                 )}

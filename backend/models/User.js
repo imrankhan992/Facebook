@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Email is required"],
         trim: true,
-       unique:true
+        unique: true
     },
     password: {
         type: String,
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
     },
     picture: {
         type: String,
-        default: "https://avatar.iran.liara.run/public",
+        default: "https://res.cloudinary.com/dbcopekhr/image/upload/v1724406930/5b305fca208d6162872c715f4c7643e1_bcpefg.jpg",
     },
     cover: {
         type: String,

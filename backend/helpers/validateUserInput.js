@@ -14,3 +14,9 @@ exports.validateUser = ({ first_name, last_name, email, password }) => {
         errors.push("Password must be between 6 and 30 characters");
     return errors;
 };
+
+exports.validateEmailInput=(email)=>{
+    let error ="";
+    if (!validateEmail(email)) {error="Invalid email address"}
+    return error;
+}

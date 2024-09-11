@@ -19,3 +19,19 @@ export const resendVerificationEmail = async (user) => {
         throw new Error(error.response?.data?.message || "Failed to resend verification email");
     }
 };
+
+// find account for reset password
+
+export const reset_password_find_account = async(email) => {
+    try {
+        const res = await axiosInstance.post(`/reset-password-find-account`, { email });
+        if (res.status !== 200) throw new Error(res.data.message);
+         // Handle redirection
+         if(res.request.responseURL){
+            window.location.href = res.request.responseURL;
+        }
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to find account");
+    }
+}

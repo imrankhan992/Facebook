@@ -1,6 +1,7 @@
+const { encrypt } = require("../helpers/encryptedData");
 const { sendVerificationEmail } = require("../helpers/mailer");
 const { generateToken } = require("../helpers/tokens");
-const { validateUser } = require("../helpers/validateUserInput");
+const { validateUser, validateEmailInput } = require("../helpers/validateUserInput");
 const { validateUsername } = require("../helpers/validation");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
@@ -132,8 +133,31 @@ exports.resendVerificationEmail = async (req, res) => {
         const emailVerificationToken = generateToken({ id: user._id.toString() }, "30m");
         const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
         sendVerificationEmail(user.email, user.first_name, url);
-        res.send({ success:true,message: "Verification email sent to your email" });
+        res.send({ success: true, message: "Verification email sent to your email" });
     } catch (error) {
-        res.status(500).send({ success:false,message: error.message });
+        res.status(500).send({ success: false, message: error.message });
     }
 };
+
+// get user name id email profile picture and encrypt it and send it to the frontend
+exports.resetPasswordFindUser = async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) throw new Error("Email is required");
+  
+      const emailError = validateEmailInput(email);
+      if (emailError) throw new Error(emailError);
+  
+      const user = await User.findOne({ email }, 'first_name last_name email picture -_id').lean().exec();
+      if (!user) throw new Error("Your search did not return any results. Please try again with other information.");
+  
+      // Encrypt user data
+      const encryptedData = encrypt(user);
+      const redirectUrl = `${process.env.BASE_URL}/recover/initiate?data=${encodeURIComponent(encryptedData)}`;
+       return res.redirect(redirectUrl);
+  
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: error.message });
+    }
+  };

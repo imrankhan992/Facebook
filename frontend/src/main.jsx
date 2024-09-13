@@ -20,6 +20,8 @@ import { Toaster } from "./components/ui/sonner";
 import ActivateEmailHome from "./components/home/Activate/Index";
 import ResetIndex from "./components/Reset/Index";
 import FindAccount from "./components/Reset/FindAccount";
+import SendCode from "./components/Reset/SendCode";
+import ResetPassword from "./components/Reset/ResetPassword";
 
 // Create Redux store and React Query client
 const store = createStore(rootReducer, composeWithDevTools());
@@ -68,6 +70,16 @@ const forgotPasswordFindAccount = createRoute({
   path: "/recover/initiate",
   component: () => <AuthRoute component={FindAccount} requiresAuth={false} />,
 });
+const forgotPasswordSendCode = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/recover/code",
+  component: () => <AuthRoute component={SendCode} requiresAuth={false} />,
+});
+const forgotPasswordRecoverPassword = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/recover/password",
+  component: () => <AuthRoute component={ResetPassword} requiresAuth={false} />,
+});
 // Add routes to the root route
 const routeTree = rootRoute.addChildren([
   homeRoute,
@@ -75,6 +87,8 @@ const routeTree = rootRoute.addChildren([
   activateEmailRoute,
   forgotPasswordRoute,
   forgotPasswordFindAccount,
+  forgotPasswordSendCode,
+  forgotPasswordRecoverPassword
 ]);
 
 // Create the router with the route tree

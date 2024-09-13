@@ -10,19 +10,6 @@ import { reset_password_find_account } from "@/apis/api";
 const ResetIndex = () => {
   const {isError,error,mutate} = useMutation({
     mutationFn: reset_password_find_account,
-    onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      return {};
-    },
-    onError: (error, variables, context) => {
-      // An error happened!
-      // Use the context to roll back
-    },
-    onSuccess: (data, variables, context) => {
-      // The mutation was successful!
-      // Use the context to do something
-    },
   })
   const formOpts = formOptions({
     defaultValues: {

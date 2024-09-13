@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         text: true,
     },
+
     username: {
         type: String,
         required: [true, "Username is required"],
@@ -84,6 +85,19 @@ const userSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "User",
     },
+   
+    resetCodeExpires: {
+        type: Date,
+    },
+    resetCode:{
+        type: String,
+    },
+    resetJwtToken:{
+        type: String,
+    },
+    resetJwtTokenExpires:{
+        type: Date,
+    },
     details: {
         bio: {
             type: String,
@@ -101,6 +115,8 @@ const userSchema = new mongoose.Schema({
             type: String,
             default: "",
         },
+        region: { type: String },
+        ipAddress: { type: String, required: false },
         work: {
             type: String,
             default: "",

@@ -12,3 +12,18 @@ exports.encrypt = (data) => {
   // Return encrypted data along with the IV (used for decryption)
   return iv.toString('hex') + ':' + encrypted;
 }
+
+
+exports.decrypt = (encryptedData) => {
+  // Extract the IV and encrypted data from the input
+  const parts = encryptedData.split(':');
+  const iv = Buffer.from(parts[0], 'hex');
+  const encryptedText = parts[1];
+
+  // Create a decipher instance
+  const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
+  let decrypted = decipher.update(encryptedText, 'hex', 'utf-8');
+  decrypted += decipher.final('utf-8');
+  // Parse the decrypted text from JSON
+  return JSON.parse(decrypted);
+}

@@ -16,8 +16,7 @@ const MenuSection = ({
   setShowUserMenu,
   showUserMenu,
 }) => {
-  console.log("MenuSection rendered");
-  console.log("showAllMenu:", showAllMenu);
+ 
 
   const Data = useMemo(
     () => [

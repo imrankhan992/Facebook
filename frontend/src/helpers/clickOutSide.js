@@ -1,22 +1,20 @@
-
-
-
 import { useEffect } from "react";
 
-export default function useClickOutside(ref, fun) {
+export default function useClickOutside(ref, callback) {
   useEffect(() => {
-    const listener = (e) => {
-      if (!ref.current || ref.current.contains(e.target)) {
-        return;
+    const handleMouseDown = (event) => {
+      // Check if the click is outside the referenced element
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback(); // Execute the callback if clicked outside
       }
-      fun();
     };
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
 
+    // Add the event listener for 'mousedown'
+    document.addEventListener("mousedown", handleMouseDown);
+
+    // Clean up the event listener on unmount
     return () => {
-      document.removeEventListener("mousedown", listener);
-      document.removeEventListener("touchstart", listener);
+      document.removeEventListener("mousedown", handleMouseDown);
     };
-  }, [ref]);
+  }, [ref, callback]); // Make sure effect depends on ref and callback
 }

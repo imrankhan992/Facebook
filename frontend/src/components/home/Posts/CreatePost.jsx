@@ -2,6 +2,7 @@ import React from "react";
 import ProfileAvatar from "./../../Header/ProfileAvatar";
 import { useSelector } from "react-redux";
 import { Feeling, LiveVideo, Photo } from "@/svg";
+import Post from "./Post";
 
 const CreatePost = () => {
   const user = useSelector((state) => state.user);
@@ -12,9 +13,8 @@ const CreatePost = () => {
           <ProfileAvatar />
           <div className="lg:h-11 h-10  hover:bg-hover2  hover:cursor-pointer rounded-full w-full px-5 flex items-center justify-start gap-3 bg-secondaryColorBg">
             {/* Responsive text size using clamp */}
-            <span className="text-textColor break-words" style={{ fontSize: 'clamp(0.6rem, 2vw, 1.1rem)' }}>
-              What's on your mind, {user?.first_name || "Guest"}?
-            </span>
+            
+            <Post user={user}/>
           </div>
         </div>
         <div className="w-full h-[0.9px] bg-hover2 mt-2.5" />

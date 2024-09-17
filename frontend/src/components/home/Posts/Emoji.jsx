@@ -8,29 +8,30 @@ const Emoji = ({
   showPicker,
   type,
   postText,
+  showImageUpload
 }) => {
   return (
     <div
-      className={`flex items-center ${
-        postText?.length > 84 ? "justify-end" : "justify-between "
+      className={`relative z-[9999] flex items-center  ${
+        postText?.length > 84 || showImageUpload ? "justify-end" : "justify-between"
       }`}
     >
-      {postText?.length < 84 && (
+      {!showImageUpload && postText?.length < 84 && (
         <img
           src="../../../icons/colorful.png"
           width={40}
           height={40}
           alt="post"
-          className="cursor-pointer relative"
+          className="cursor-pointer"
         />
       )}
-      <div className="relative flex items-center justify-end hover:bg-blueColor/10   right-0 rounded-full group">
+      <div className="relative flex items-center justify-end hover:bg-blueColor/10 right-0 rounded-full group">
         <i
           onClick={handleEmojiPickerClick}
-          className="emoji_icon_large relative cursor-pointer "
+          className="emoji_icon_large cursor-pointer"
         ></i>
         <span
-          className={`absolute   group-hover:block hidden -top-10 rounded-lg -left-10 font-semibold bg-black/75 px-2 py-1 text-white`}
+          className="absolute group-hover:block hidden -top-10 rounded-lg -left-10 font-semibold bg-black/75 px-2 py-1 text-white"
         >
           emoji
         </span>
@@ -38,7 +39,8 @@ const Emoji = ({
         {showPicker && (
           <div
             ref={ref}
-            className={`fixed -top-0 -right-36 z-50 ${type==="type2"&&("-top-8 -right-36")} emoji-box-shadow`} 
+            className="absolute bottom-full mb-2 right-0 z-[9999] emoji-box-shadow"
+            style={{ zIndex: 9999 }}
           >
             <EmojiPicker
               previewConfig={{ showPreview: false }}
@@ -46,7 +48,7 @@ const Emoji = ({
               onEmojiClick={handleEmoji}
               width="250px"
               height="250px"
-              skinTonePickerLocation="top"
+                disableAutoFocus={true}
             />
           </div>
         )}

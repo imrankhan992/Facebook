@@ -31,6 +31,7 @@ module.exports = {
         hover1:"#F2F2F2",
         textColor:"#606266",
         bgColorDark:"#E4E6EB",
+        iconsBg:"#D8DADF",
         primary: {
           DEFAULT: "#F5F6F7",
           foreground: "hsl(var(--primary-foreground))",

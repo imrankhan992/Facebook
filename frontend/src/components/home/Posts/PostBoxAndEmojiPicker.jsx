@@ -9,15 +9,15 @@ const PostBoxAndEmojiPicker = ({ user }) => {
   const pickerRef = useRef(null);
   const textAreaRef = useRef(null);
   const [showImageUpload, setShowImageUpload] = useState(false);
-
   const [cursorPosition, setCursorPosition] = useState();
 
-  // useEffect(() => {
-  //   // Adjust the height of the textarea based on its scroll height
-  //   const textarea = textAreaRef.current;
-  //   textarea.style.height = "auto"; // Reset the height to auto to recalculate
-  //   textarea.style.height = `${textarea.scrollHeight}px`;
-  // }, [postText, showImageUpload]);
+  useEffect(() => {
+    const textarea = textAreaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto"; // Reset the height to auto to recalculate
+      textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to scrollHeight
+    }
+  }, [postText, showImageUpload]);
 
   const handleEmoji = ({ emoji }) => {
     const ref = textAreaRef.current;
@@ -53,63 +53,54 @@ const PostBoxAndEmojiPicker = ({ user }) => {
   };
 
   return (
-    <div className="w-full ">
-      <div className={`w-full  max-h-[300px]  flex justify-around overflow-hidden   flex-col `}>
-        <textarea
-          onChange={(e) => setPostText(e.target.value)}
-          value={postText}
-          placeholder={`What's on your mind, ${
-            user?.first_name + " " + user?.last_name || "Guest"
-          }?`}
-          className={`w-full focus:outline-none  ${postText?.length>84 ?"overflow-y-scroll":""} placeholder:text-2xl  placeholder:text-black/65 resize-none bg-none ${
-            showImageUpload
-              ? "min-h-20 placeholder:text-[16px] !pr-6"
-              : "placeholder:text-2xl min-h-32"
-          } ${
-            postText.length > 84 || showImageUpload
-              ? "text-[15px]"
-              : "text-[24px]"
-          }`}
-          ref={textAreaRef}
-         
-        />
-        {/* {showImageUpload&&( <div  className={`  ${postText.length > 84 ? "flex items-center w-full  justify-end " : ""} `}>
-        <i
-          onClick={handleEmojiPickerClick}
-          className={`emoji_icon_large  cursor-pointer right-0   ${postText.length > 84 ? "bottom-1.5 " : "top-1.5 absolute"} `}
-        ></i>
-        
-        </div>) } */}
+    <div className="w-full  flex flex-col gap-2 px-2 overflow-auto ">
+      <textarea
+        onChange={(e) => setPostText(e.target.value)}
+        value={postText}
+        placeholder={`What's on your mind, ${
+          user?.first_name + " " + user?.last_name || "Guest"
+        }?`}
+        className={`w-full focus:outline-none  placeholder:text-2xl resize-none placeholder:text-black/65   bg-none ${
+          showImageUpload
+            ? "  placeholder:text-[16px] !pr-6 text-[12px] "
+            : "placeholder:text-2xl min-h-32 "
+        } ${
+          postText.length > 84 || showImageUpload
+            ? "text-[15px]"
+            : "text-[24px]"
+        }`}
+        ref={textAreaRef}
+        style={{ overflow: "auto" }} 
+      />
 
-       
-      </div>
-
-     <div>
-     {!showImageUpload && (
-        <Emoji
-          handleEmojiPickerClick={handleEmojiPickerClick}
-          handleEmoji={handleEmoji}
-          ref={pickerRef}
-          showPicker={showPicker}
-          type={"type1"}
-          postText={postText}
-        />
-      )}
-      {showImageUpload && (
-        <>
+      <div>
+        {!showImageUpload && (
           <Emoji
             handleEmojiPickerClick={handleEmojiPickerClick}
             handleEmoji={handleEmoji}
             ref={pickerRef}
             showPicker={showPicker}
-            type={"type2"}
+            type={"type1"}
+            showImageUpload={showImageUpload}
             postText={postText}
           />
-          <PreviewImage />
-        </>
-      )}
-     </div>
-
+        )}
+        {showImageUpload && (
+          <>
+            <Emoji
+              handleEmojiPickerClick={handleEmojiPickerClick}
+              handleEmoji={handleEmoji}
+              ref={pickerRef}
+              showPicker={showPicker}
+              type={"type2"}
+              showImageUpload={showImageUpload}
+              postText={postText}
+            />
+          </>
+        )}
+        
+      </div>
+      {showImageUpload && <PreviewImage />}
       
     </div>
   );

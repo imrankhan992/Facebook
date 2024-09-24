@@ -3,14 +3,23 @@ import AddToPostSection from "./AddToPostSection";
 import PreviewImage from "./PreviewImage";
 import Emoji from "./Emoji";
 
-const PostBoxAndEmojiPicker = ({ user }) => {
+const PostBoxAndEmojiPicker = ({
+  user,
+  showImageUpload,
+  setShowImageUpload,
+  selectedBg, setSelectedBg,
+  postText, setPostText
+}) => {
   const [showPicker, setShowPicker] = useState(false);
-  const [postText, setPostText] = useState("");
+  
+  const [background, setBackground] = useState(false);
+  
   const pickerRef = useRef(null);
   const textAreaRef = useRef(null);
-  const [showImageUpload, setShowImageUpload] = useState(false);
-  const [cursorPosition, setCursorPosition] = useState();
 
+  const [cursorPosition, setCursorPosition] = useState();
+  const bgRef = useRef(null);
+  // Automatically adjust textarea height based on text length
   useEffect(() => {
     const textarea = textAreaRef.current;
     if (textarea) {
@@ -19,16 +28,31 @@ const PostBoxAndEmojiPicker = ({ user }) => {
     }
   }, [postText, showImageUpload]);
 
+  // Restore cursor position after text/emoji update
+  useEffect(() => {
+    if (textAreaRef.current) {
+      textAreaRef.current.selectionEnd = cursorPosition;
+    }
+  }, [cursorPosition]);
+
+  // Handle emoji insertion
   const handleEmoji = ({ emoji }) => {
     const ref = textAreaRef.current;
     ref.focus();
+
+    // Get the current cursor position
     const start = postText.substring(0, ref.selectionStart);
-    const end = postText.substring(ref.selectionStart);
+    const end = postText.substring(ref.selectionEnd); // Use selectionEnd to handle selected text
     const newText = start + emoji + end;
+
     setPostText(newText);
-    setCursorPosition(start.length + emoji.length);
+
+    // Set the cursor position after the emoji
+    const newCursorPosition = start.length + emoji.length;
+    setCursorPosition(newCursorPosition);
   };
 
+  // Close emoji picker when clicking outside
   const handleClickOutside = (e) => {
     if (
       pickerRef.current &&
@@ -52,25 +76,58 @@ const PostBoxAndEmojiPicker = ({ user }) => {
     setShowPicker((prev) => !prev);
   };
 
+  // Array of post backgrounds
+  const postBackgrounds = [
+    "/images/postBackgrounds/1.jpg",
+    "/images/postBackgrounds/2.jpg",
+    "/images/postBackgrounds/3.jpg",
+    "/images/postBackgrounds/4.jpg",
+    "/images/postBackgrounds/5.jpg",
+    "/images/postBackgrounds/6.jpg",
+    "/images/postBackgrounds/7.jpg",
+    "/images/postBackgrounds/8.jpg",
+    "/images/postBackgrounds/9.jpg",
+  ];
+
+  useEffect(() => {
+    if (selectedBg && postText.length < 84) {
+      bgRef.current.style.backgroundImage = `url(${selectedBg})`;
+    }else{
+      bgRef.current.style.backgroundImage = "";
+      setSelectedBg("");
+      setBackground(false);
+    }
+  }, [selectedBg,postText]);
+
   return (
-    <div className="w-full  flex flex-col gap-2 px-2 overflow-auto ">
+    <div
+      className="w-full justify-between flex flex-col   px-2 overflow-auto"
+      ref={bgRef}
+    >
       <textarea
         onChange={(e) => setPostText(e.target.value)}
         value={postText}
         placeholder={`What's on your mind, ${
           user?.first_name + " " + user?.last_name || "Guest"
         }?`}
-        className={`w-full focus:outline-none  placeholder:text-2xl resize-none placeholder:text-black/65   bg-none ${
+        className={`w-full focus:outline-none ${postText.length<84  && background ?"text-center":""}  bg-transparent  placeholder:text-2xl resize-none placeholder:text-black/65 bg-none ${
           showImageUpload
-            ? "  placeholder:text-[16px] !pr-6 text-[12px] "
-            : "placeholder:text-2xl min-h-32 "
+            ? "placeholder:text-[16px] !pr-6 text-[12px] "
+            : "placeholder:text-2xl max-h-72 min-h-60"
         } ${
           postText.length > 84 || showImageUpload
             ? "text-[15px]"
             : "text-[24px]"
         }`}
         ref={textAreaRef}
-        style={{ overflow: "auto" }} 
+        style={{
+          paddingTop: `${
+            background && postText.length < 84
+              ? Math.abs(textAreaRef.current.value.length * 0.1 - 23)
+              : "0"
+          }%`,
+          overflow: "auto",
+        }}
       />
 
       <div>
@@ -83,6 +140,12 @@ const PostBoxAndEmojiPicker = ({ user }) => {
             type={"type1"}
             showImageUpload={showImageUpload}
             postText={postText}
+            background={background}
+            setBackground={setBackground}
+            selectedBg={selectedBg}
+            setSelectedBg={setSelectedBg}
+            postBackgrounds={postBackgrounds}
+            bgRef={bgRef}
           />
         )}
         {showImageUpload && (
@@ -95,13 +158,22 @@ const PostBoxAndEmojiPicker = ({ user }) => {
               type={"type2"}
               showImageUpload={showImageUpload}
               postText={postText}
+              background={background}
+              setBackground={setBackground}
+              selectedBg={selectedBg}
+              setSelectedBg={setSelectedBg}
+              postBackgrounds={postBackgrounds}
+              bgRef={bgRef}
             />
           </>
         )}
-        
       </div>
-      {showImageUpload && <PreviewImage />}
-      
+      {showImageUpload && (
+        <PreviewImage
+          showImageUpload={showImageUpload}
+          setShowImageUpload={setShowImageUpload}
+        />
+      )}
     </div>
   );
 };

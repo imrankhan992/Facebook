@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose")
 const app = express();
 const { readdirSync } = require("fs")
+const fileUpload = require("express-fileupload")
 
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -26,7 +27,13 @@ function options(req, res) {
 }
 
 // this is middleware 
-
+app.use(fileUpload({
+    // Configure file uploads with maximum file size 10MB
+    //   limits: { fileSize: 10 * 1024 * 1024 },
+    // Temporarily store uploaded files to disk, rather than buffering in memory
+    useTempFiles: true,
+    // tempFileDir : '/tmp/'
+}))
 app.use(express.json())
 app.use(cors(options));
 

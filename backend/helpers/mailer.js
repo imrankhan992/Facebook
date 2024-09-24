@@ -102,10 +102,9 @@ exports.sendResetCodeEmail = async (email, name,resetCode) => {
     };
 
     const result = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', result);
+   
     return result;
   } catch (error) {
-    console.error('Error sending email:', error.message);
-    throw new Error('Failed to send reset code email. Please try again later.');
+    throw new Error('Failed to send reset code email. we will fix this issue as soon as possible');
   }
 };

@@ -1,13 +1,14 @@
 import { Dots, Feeling, Photo } from "@/svg";
 
-export default function AddToPostSection() {
+export default function AddToPostSection({showImageUpload, setShowImageUpload}) {
   return (
-    <div className="flex w-full justify-between items-center border p-3.5 shadow-sm rounded-lg border-borderColor/40 ">
+    <div className="flex w-full justify-between  items-center border p-3.5 shadow-sm rounded-lg border-borderColor/40 ">
       <div className="addto_text font-semibold">Add to your post</div>
     <div className="flex  items-center justify-center">
 
 
     <div
+    onClick={() => setShowImageUpload(true)}
         className="hover:bg-secondaryColorBg p-2 rounded-full flex items-center justify-center cursor-pointer "
         
       >

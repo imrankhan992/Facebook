@@ -82,9 +82,22 @@ export const update_password = async ({ password, sec_Id }) => {
 
         const res = await axiosInstance.post(`/rest_Password/update-password`, { password, sec_Id });
         if (res.status !== 200) throw new Error(res.data.message);
-       
+
         return res.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || "Failed to update password");
+    }
+}
+
+
+// post apis
+
+export const createPost = async ({ type, text, images, background, user, token }) => {
+    try {
+        const { data } = await axiosInstance.post("/create-post", { type, text, images, background, user, token }, { headers: { Authorization: token } })
+        if (data.success === false) throw new Error(data.message);
+        return data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to create post")
     }
 }

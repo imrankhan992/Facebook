@@ -8,14 +8,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
+import { BeatLoader } from "react-spinners";
 import React, { useState } from "react";
 import PostBoxAndEmojiPicker from "./PostBoxAndEmojiPicker";
 import AddToPostSection from "./AddToPostSection";
+import { useMutation } from "@tanstack/react-query";
+import { createPost } from "@/apis/api";
+import { playSuccessSound } from "@/apis/soundsApi";
 
 const Post = ({ user }) => {
+  const [showImageUpload, setShowImageUpload] = useState(true);
+  // State to track the selected background
+  const [selectedBg, setSelectedBg] = useState();
+  const [postText, setPostText] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const { mutate, isPending, isError, error, data, isPaused, isSuccess } =
+    useMutation({
+      mutationKey: ["createPost"],
+      mutationFn: createPost,
+      onSuccess:()=>{
+        setDialogOpen(false);
+        playSuccessSound();
+      }
+    });
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <span
           className="text-textColor break-words w-full flex items-center justify-start"
@@ -24,12 +41,39 @@ const Post = ({ user }) => {
           What's on your mind, {user?.first_name || "Guest"}?
         </span>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg border-shadow overflow-auto max-h-[100vh] min-h-[90vh]">
+      <DialogContent
+        className={`sm:max-w-lg  border-shadow overflow-auto ${
+          showImageUpload ? "" : "hide-scrollbar "
+        } max-h-[100vh] min-h-[90vh]`}
+      >
         <DialogHeader className="py-[1.3rem] absolute w-full left-1/2 transform -translate-x-1/2 flex justify-center">
           <DialogTitle className="text-xl font-bold text-center">
             Create Post
           </DialogTitle>
         </DialogHeader>
+        {isError && !isPending && (
+          <div className="absolute z-50 bg-white/65 inset-0 flex gap-2 items-center justify-center">
+            {" "}
+            <div className="text-red-600">{error?.message}</div>
+            <div>
+              <Button
+                onClick={() => {
+                  mutate({
+                    type: "backgroundPost",
+                    text: postText,
+                    images: [],
+                    background: selectedBg,
+                    user: user?.id,
+                    token: user?.token,
+                  });
+                }}
+                className="bg-blueColor hover:bg-blueColor transform transition-all active:scale-95 duration-150"
+              >
+                Try Again
+              </Button>
+            </div>
+          </div>
+        )}
         {/* profile picture */}
         <div className="flex items-end justify-end flex-col  pt-4 rounded-lg  w-full">
           <div className="flex gap-4 items-center justify-start w-full">
@@ -68,22 +112,45 @@ const Post = ({ user }) => {
             </div>
           </div>
         </div>
-
+        {isPaused && (
+          <p className="text-red-600 ">Please Check your Internet Connection</p>
+        )}
         <div className="flex items-center flex-col  overflow-auto duration-1000 hover:transition-all ">
-          <PostBoxAndEmojiPicker user={user} />
+          <PostBoxAndEmojiPicker
+            user={user}
+            showImageUpload={showImageUpload}
+            setShowImageUpload={setShowImageUpload}
+            selectedBg={selectedBg}
+            setSelectedBg={setSelectedBg}
+            postText={postText}
+            setPostText={setPostText}
+          />
         </div>
         <div className="w-full gap-2 flex flex-col items-end justify-end">
           {/* add post and other icons */}
-          <AddToPostSection />
-          <DialogClose asChild>
-            <Button
-              type="button"
-              variant="secondary"
-              className="w-full bg-blueColor hover:bg-blueColor text-white font-semibold text-lg "
-            >
-              Next
-            </Button>
-          </DialogClose>
+          <AddToPostSection
+            showImageUpload={showImageUpload}
+            setShowImageUpload={setShowImageUpload}
+          />
+
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full bg-blueColor hover:bg-blueColor text-white font-semibold text-lg select-none"
+            disabled={isPending || postText.length === 0}
+            onClick={() => {
+              mutate({
+                type: "backgroundPost",
+                text: postText,
+                images: [],
+                background: selectedBg,
+                user: user?.id,
+                token: user?.token,
+              });
+            }}
+          >
+            {isPending ? <BeatLoader color="white" size={10} /> : "Post"}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

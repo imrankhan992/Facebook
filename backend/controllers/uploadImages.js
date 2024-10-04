@@ -10,7 +10,7 @@ cloudinary.config({
 exports.uploadImages = async (req, res) => {
     try {
         if (!req.files || Object.values(req.files).flat().length === 0) {
-            return res.status(400).json({ error: "No files were submitted." });
+            throw new Error("No files were submitted.")
         }
 
         const files = Object.values(req.files).flat();
@@ -27,7 +27,7 @@ exports.uploadImages = async (req, res) => {
                     throw err;
                 })
         );
-        console.log("uploadPromises", uploadPromises);
+
 
         await Promise.all(uploadPromises);
 

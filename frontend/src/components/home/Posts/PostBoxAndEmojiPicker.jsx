@@ -7,13 +7,17 @@ const PostBoxAndEmojiPicker = ({
   user,
   showImageUpload,
   setShowImageUpload,
-  selectedBg, setSelectedBg,
-  postText, setPostText
+  selectedBg,
+  setSelectedBg,
+  postText,
+  setPostText,
+  mediaFiles,
+  setMediaFiles,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
-  
+
   const [background, setBackground] = useState(false);
-  
+
   const pickerRef = useRef(null);
   const textAreaRef = useRef(null);
 
@@ -92,12 +96,12 @@ const PostBoxAndEmojiPicker = ({
   useEffect(() => {
     if (selectedBg && postText.length < 84) {
       bgRef.current.style.backgroundImage = `url(${selectedBg})`;
-    }else{
+    } else {
       bgRef.current.style.backgroundImage = "";
       setSelectedBg("");
       setBackground(false);
     }
-  }, [selectedBg,postText]);
+  }, [selectedBg, postText]);
 
   return (
     <div
@@ -110,7 +114,9 @@ const PostBoxAndEmojiPicker = ({
         placeholder={`What's on your mind, ${
           user?.first_name + " " + user?.last_name || "Guest"
         }?`}
-        className={`w-full focus:outline-none ${postText.length<84  && background ?"text-center":""}  bg-transparent  placeholder:text-2xl resize-none placeholder:text-black/65 bg-none ${
+        className={`w-full focus:outline-none ${
+          postText.length < 84 && background ? "text-center" : ""
+        }  bg-transparent  placeholder:text-2xl resize-none placeholder:text-black/65 bg-none ${
           showImageUpload
             ? "placeholder:text-[16px] !pr-6 text-[12px] "
             : "placeholder:text-2xl max-h-72 min-h-60"
@@ -170,6 +176,8 @@ const PostBoxAndEmojiPicker = ({
       </div>
       {showImageUpload && (
         <PreviewImage
+          mediaFiles={mediaFiles}
+          setMediaFiles={setMediaFiles}
           showImageUpload={showImageUpload}
           setShowImageUpload={setShowImageUpload}
         />

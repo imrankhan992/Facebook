@@ -13,30 +13,39 @@ import React, { useState } from "react";
 import PostBoxAndEmojiPicker from "./PostBoxAndEmojiPicker";
 import AddToPostSection from "./AddToPostSection";
 import { useMutation } from "@tanstack/react-query";
-import { createPost } from "@/apis/api";
+import { createPost, uploadImages } from "@/apis/api";
 import { playSuccessSound } from "@/apis/soundsApi";
+import dataURItoBlob from "@/helpers/dataURItoBlob";
 
 const Post = ({ user }) => {
   const [showImageUpload, setShowImageUpload] = useState(true);
   // State to track the selected background
   const [selectedBg, setSelectedBg] = useState();
+  const [mediaFiles, setMediaFiles] = useState([]);
   const [postText, setPostText] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const { mutate, isPending, isError, error, data, isPaused, isSuccess } =
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const { mutate, isPending, isError, error, data, isPaused, isSuccess,reset } =
     useMutation({
       mutationKey: ["createPost"],
-      mutationFn: createPost,
-      onSuccess:()=>{
+      mutationFn: selectedBg
+        ? createPost
+        : mediaFiles.length > 0
+        ? uploadImages
+        : createPost,
+      onSuccess: () => {
         setDialogOpen(false);
         playSuccessSound();
-      }
+        setMediaFiles([]);
+        setPostText("");
+      },
     });
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <span
           className="text-textColor break-words w-full flex items-center justify-start"
-          style={{ fontSize: "clamp(0.6rem, 2vw, 1.1rem)" }}
+          style={{ fontSize: "clamp(0.8rem, 2vw, 1.1rem)" }}
         >
           What's on your mind, {user?.first_name || "Guest"}?
         </span>
@@ -58,14 +67,7 @@ const Post = ({ user }) => {
             <div>
               <Button
                 onClick={() => {
-                  mutate({
-                    type: "backgroundPost",
-                    text: postText,
-                    images: [],
-                    background: selectedBg,
-                    user: user?.id,
-                    token: user?.token,
-                  });
+                  reset();
                 }}
                 className="bg-blueColor hover:bg-blueColor transform transition-all active:scale-95 duration-150"
               >
@@ -124,6 +126,8 @@ const Post = ({ user }) => {
             setSelectedBg={setSelectedBg}
             postText={postText}
             setPostText={setPostText}
+            mediaFiles={mediaFiles}
+            setMediaFiles={setMediaFiles}
           />
         </div>
         <div className="w-full gap-2 flex flex-col items-end justify-end">
@@ -140,12 +144,18 @@ const Post = ({ user }) => {
             disabled={isPending || postText.length === 0}
             onClick={() => {
               mutate({
-                type: "backgroundPost",
+                type: selectedBg
+                  ? "backgroundPost"
+                  : mediaFiles?.length > 0
+                  ? "postImages"
+                  : "textPost",
                 text: postText,
-                images: [],
-                background: selectedBg,
+                images: mediaFiles.length > 0 ? mediaFiles : null,
+                background: selectedBg ? selectedBg : null,
                 user: user?.id,
+                
                 token: user?.token,
+                username: user?.username,
               });
             }}
           >

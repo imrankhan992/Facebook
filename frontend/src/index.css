@@ -231,3 +231,42 @@ a {
 .left_side {
   animation: slide-left 0.2s ease-in-out;
 }
+
+
+/* global.css */
+
+.row {
+  box-sizing: border-box;
+}
+
+.single-post {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  background-color: white;
+  /* Ensure no conflicting positioning */
+}
+
+.image img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.content {
+  padding-left: 10px;
+}
+
+.content div {
+  margin-bottom: 5px;
+}
+
+/* Optional: Adjust scrollbar appearance */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

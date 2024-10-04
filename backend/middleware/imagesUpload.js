@@ -4,7 +4,7 @@ exports.imageUploadMiddleware = async (req, res, next) => {
     try {
         let files = req.files;
         if (!files || Object.values(files).flat().length === 0) {
-            return res.status(400).json({ error: "No files were submitted." });
+            throw new Error("No files were submitted.")
         }
         files = Object.values(files).flat();
 
@@ -24,14 +24,15 @@ exports.imageUploadMiddleware = async (req, res, next) => {
         // Remove temporary files if there are errors
         if (errors.length > 0) {
             files.forEach(file => removeTmp(file.tempFilePath));
-            return res.status(400).json({ errors });
+            throw new Error(errors)
         }
 
         req.files = files;
         next();
     } catch (error) {
         console.error("Error during file upload:", error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: error.message });
+        
     }
 };
 

@@ -22,6 +22,7 @@ import ResetIndex from "./components/Reset/Index";
 import FindAccount from "./components/Reset/FindAccount";
 import SendCode from "./components/Reset/SendCode";
 import ResetPassword from "./components/Reset/ResetPassword";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Create Redux store and React Query client
 const store = createStore(rootReducer, composeWithDevTools());
@@ -103,6 +104,7 @@ if (rootElement) {
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
         <Toaster />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Provider>
   );

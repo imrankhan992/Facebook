@@ -1,3 +1,4 @@
+import dataURItoBlob from "@/helpers/dataURItoBlob";
 import { encryptData } from "@/helpers/encryptionData";
 import axiosInstance from "@/utils/axios";
 import Cookies from "js-cookie";
@@ -94,10 +95,48 @@ export const update_password = async ({ password, sec_Id }) => {
 
 export const createPost = async ({ type, text, images, background, user, token }) => {
     try {
-        const { data } = await axiosInstance.post("/create-post", { type, text, images, background, user, token }, { headers: { Authorization: token } })
+        const { data } = await axiosInstance.post("/create-post", { type, text, images, background, user }, { headers: { Authorization: token } })
         if (data.success === false) throw new Error(data.message);
         return data;
     } catch (error) {
         throw new Error(error.response?.data?.message || "Failed to create post")
+    }
+}
+
+// upload images 
+export const uploadImages = async ({ type, text, images, background, user, token, username }) => {
+    try {
+
+
+        const path = `${username}/post Images`;
+        let formData = new FormData();
+        formData.append("path", path);
+
+        const files = images.map((image) => {
+            return dataURItoBlob(image);
+        })
+        files.forEach((file) => {
+            formData.append("file", file);
+        })
+        const { data: urls, status } = await axiosInstance.post("/uploadImage", formData, { headers: { Authorization: token, "content-type": "multipart/form-data", } });
+        if (status !== 201) throw new Error(urls?.message)
+        const { data } = await axiosInstance.post("/create-post", { type: null, text, images: urls, user }, { headers: { Authorization: token } })
+        if (data.success === false) throw new Error(data.message);
+        return data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message)
+    }
+}
+
+
+// get all posts 
+export const getPosts = async ({ pageParam=1,token }) => {
+    try {
+        console.log("pageParams", pageParam)
+        const { data } = await axiosInstance.get(`/get-posts?page=${pageParam}&limit=2`, { headers: { Authorization: token } });
+        if (data.success === false) throw new Error(data.message);
+        return data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to get posts")
     }
 }

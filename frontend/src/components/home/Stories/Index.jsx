@@ -12,11 +12,11 @@ import { storiesData } from "@/data/storiesData";
 import StoriesAvatar from "./StoriesAvatar";
 
 
-const Stories = () => {
+const Stories = ({style}) => {
   const swiperRef = useRef(null);
 
   return (
-    <div className="relative flex items-center py-6 rounded-xl">
+    <div style={style} className="relative flex items-center py-3  rounded-xl md:px-[1.1rem]">
       <Swiper
         modules={[ Navigation, Pagination]}
         ref={swiperRef}
@@ -31,7 +31,7 @@ const Stories = () => {
       >
         {/* Create Story */}
         <SwiperSlide  key="create-story">
-          <div className="flex-none w-20 mt-16 md:mt-0 h-32 lg:w-36 lg:h-60  rounded-xl relative stories-shadow cursor-pointer overflow-hidden bg-white group hover:bg-hover2">
+          <div className="flex-none w-20  h-32 lg:w-[7.5rem] lg:h-52  rounded-xl relative cursor-pointer overflow-hidden bg-white group hover:bg-hover2">
             <div className="relative w-full h-[80%] overflow-hidden rounded-t-xl flex items-center justify-center">
               <img
                 src="https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg"
@@ -54,9 +54,9 @@ const Stories = () => {
 
         </SwiperSlide>
         {/* Individual Stories */}
-        {storiesData.map((story) => (
-          <SwiperSlide key={story.id} virtualIndex={story.id}>
-            <div className="flex-none w-20 mt-16 md:mt-0 h-32 md:w-36 md:h-60 rounded-xl relative stories-shadow cursor-pointer overflow-hidden bg-white group hover:bg-hover2">
+        {storiesData.map((story,index) => (
+          <SwiperSlide key={index} virtualIndex={index}>
+            <div className="flex-none w-20   h-32 lg:w-[7.5rem] lg:h-52  rounded-xl relative  cursor-pointer overflow-hidden bg-white group hover:bg-hover2">
             <StoriesAvatar />             
               <div className="relative w-full h-full overflow-hidden rounded-t-xl flex items-center justify-center">
                 <img

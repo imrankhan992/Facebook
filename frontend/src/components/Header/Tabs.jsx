@@ -119,10 +119,10 @@ export function HeaderTabs() {
       >
         <TabsList className="flex w-full lg:gap-8  items-center bg-transparent justify-between  lg:h-14  ">
           {data.map((item, index) => (
-            <Tooltip>
+            <Tooltip  key={index}>
               <TooltipTrigger>
                 <TabsTrigger
-                  key={index}
+                 
                   value={item.value}
                   className={
                     activeTab === item.value

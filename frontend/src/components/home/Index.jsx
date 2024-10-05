@@ -5,19 +5,21 @@ import React, {
   createContext,
   useCallback,
 } from "react";
+import { useSelector } from "react-redux";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { VariableSizeList } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 import Index from "./../Header/Index";
 import LeftLink from "./LeftLink";
 import { left } from "@/data/home";
-import { useSelector } from "react-redux";
 import ArrowDown1 from "../../svg/arrowDow1";
-import Stories from "./Stories/Index";
-import CreatePost from "./Posts/CreatePost";
 import ResendEmailVerification from "./Activate/ResendEmailVerification";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getPosts } from "@/apis/api";
 import SinglePost from "./ShowPosts/SinglePost";
-import { FixedSizeList, VariableSizeList } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
+import CreatePost from "./Posts/CreatePost";
+import Stories from "./Stories/Index";
+import { getPosts } from "@/apis/api";
+
+
 export const DynamicListContext = createContext({});
 
 const Home = () => {
@@ -31,63 +33,52 @@ const Home = () => {
     setShowMore(!showMore);
   };
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isError } =
-    useInfiniteQuery({
-      queryKey: ["posts"],
-      queryFn: ({ pageParam = 1 }) =>
-        getPosts({ pageParam, token: user.token }),
-      getNextPageParam: (lastPage) =>
-        lastPage.hasMore ? lastPage.nextPage : undefined,
-      staleTime: 1000 * 60 * 5,
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ["posts"],
+    queryFn: ({ pageParam = 1 }) => getPosts({ pageParam, token: user.token }),
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.nextPage : undefined,
+    staleTime: 1000 * 60 * 5,
+  });
 
   const allPosts = data?.pages.flatMap((page) => page.posts) || [];
-
-  const parentRef = useRef();
-  const currentRef = parentRef.current;
-
-  // Handle infinite scrolling by fetching next page when nearing the bottom
-  useEffect(() => {
-    const onScroll = () => {
-      const { scrollHeight, clientHeight, scrollTop } = parentRef.current;
-      console.log(
-        scrollHeight,
-        clientHeight,
-        scrollTop,
-        "this is scrollHeight"
-      );
-      if (
-        scrollTop + clientHeight >= scrollHeight - 100 &&
-        hasNextPage &&
-        !isLoading
-      ) {
-        fetchNextPage();
-      }
-    };
-
-    if (currentRef) {
-      currentRef.addEventListener("scroll", onScroll);
-    }
-
-    return () => {
-      if (currentRef) {
-        currentRef.removeEventListener("scroll", onScroll);
-      }
-    };
-  }, [hasNextPage, fetchNextPage, isLoading]);
+  const parentRef = useRef(null);
 
   const setSize = useCallback((index, size) => {
     if (sizeMap.current[index] !== size) {
       sizeMap.current = { ...sizeMap.current, [index]: size };
       if (listRef.current) {
-        listRef.current.resetAfterIndex(0);
+        listRef.current.resetAfterIndex(index);
       }
     }
   }, []);
 
-  const getSize = useCallback((index) => {
-    return sizeMap.current[index];
-  }, []);
+  const getSize = useCallback((index) => sizeMap.current[index]);
+
+  // Monitor the last item being rendered
+  const isItemLoaded = (index) => index < allPosts.length;
+console.log(isItemLoaded,"this is is item loaded")
+  // Check if last post is rendered, then fetch new posts
+  const loadMoreItems = useCallback(
+    (visibleStartIndex, visibleStopIndex) => {
+      if (
+        visibleStopIndex === allPosts.length - 1 &&
+        hasNextPage &&
+        !isFetchingNextPage
+      ) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage, allPosts.length]
+  );
+
   return (
     <DynamicListContext.Provider value={{ setSize }}>
       <Index>
@@ -100,7 +91,7 @@ const Home = () => {
                   src="https://res.cloudinary.com/dbcopekhr/image/upload/v1724406930/5b305fca208d6162872c715f4c7643e1_bcpefg.jpg"
                   className="bg-white rounded-full"
                   width={30}
-                  alt=""
+                  alt="User Avatar"
                 />
                 <span className="font-semibold text-[14.5px]">
                   {user?.first_name + " " + user?.last_name}
@@ -134,7 +125,7 @@ const Home = () => {
 
           {/* Middle Section */}
           <div
-            className="flex-1  md:px-16 px-4 shadow-none overflow-y-auto pt-16 bg-[#F0F2F5] scrollbar-hide h-screen"
+            className="flex-1 md:px-[4rem] px-4 shadow-none overflow-y-auto pt-16 bg-[#F0F2F5] scrollbar-hide h-screen"
             ref={parentRef}
           >
             {!user?.verified && <ResendEmailVerification />}
@@ -148,30 +139,47 @@ const Home = () => {
                     height={height}
                     width={width}
                     itemData={allPosts}
-                    itemCount={allPosts.length } // Assuming 2 additional items
-                    itemSize={getSize} // Keep it consistent
-                    
-                  style={{ overflowX: "hidden" , overflowY: "auto", backgroundColor: "white", height: "100vh"}}
-                    
+                    itemCount={allPosts.length}
+                    itemSize={getSize}
+                    onItemsRendered={({ visibleStopIndex }) =>
+                      loadMoreItems(0, visibleStopIndex)
+                    }
+                   
+                    className="List"
+                    style={{
+                      overflowX: "hidden",
+                      overflowY: "auto",
+                      backgroundColor: "white",
+                      height: "100vh",
+                    }}
                   >
                     {({ index, style }) => {
-                      const post = allPosts[index]; // Adjusting index for posts
-                      return post ? (
+                      const post = allPosts[index];
+                      return (
                         <SinglePost
-                        
                           key={index}
                           post={post}
                           style={style}
                           index={index}
                         />
-                      ) : null; // Handle undefined post
+                        
+                      );
+
                     }}
+                    
                   </VariableSizeList>
                 )}
+                
               </AutoSizer>
+              
+            ) : isLoading ? (
+              <div className="">Loading...</div>
+            ) : isError ? (
+              <div>Error loading posts.</div>
             ) : (
               <div>No posts available</div>
             )}
+           
           </div>
 
           {/* Right Section */}
@@ -185,58 +193,3 @@ const Home = () => {
 };
 
 export default Home;
-
-// import React, { useRef, createContext, useCallback } from "react";
-// import AutoSizer from "react-virtualized-auto-sizer";
-// import { VariableSizeList } from "react-window";
-// import { faker } from "@faker-js/faker";
-// import ListRow from "./ListRow";
-
-// export const DynamicListContext = createContext({});
-
-// const genItems = (size) => {
-//   return new Array(size)
-//     .fill("")
-//     .map(() => faker.lorem.sentence());
-// };
-
-// const Home = () => {
-//   const mockListItems = genItems(100);
-//   const listRef = useRef(null);
-//   const sizeMap = useRef({});
-
-//   const setSize = useCallback((index, size) => {
-//     if (sizeMap.current[index] !== size) {
-//       sizeMap.current = { ...sizeMap.current, [index]: size };
-//       if (listRef.current) {
-//         listRef.current.resetAfterIndex(0);
-//       }
-//     }
-//   }, []);
-
-//   const getSize = useCallback((index) => {
-//     return sizeMap.current[index] || 100; // Default height
-//   }, []);
-
-//   return (
-//     <DynamicListContext.Provider value={{ setSize }}>
-//       <AutoSizer>
-//         {({ height, width }) => (
-//           <VariableSizeList
-//             ref={listRef}
-//             width={width}
-//             height={height}
-//             itemData={mockListItems}
-//             itemCount={mockListItems.length}
-//             itemSize={getSize}
-//            overscanCount={5}
-//           >
-//             {({ index, style }) => <ListRow index={index} style={style} data={mockListItems} />}
-//           </VariableSizeList>
-//         )}
-//       </AutoSizer>
-//     </DynamicListContext.Provider>
-//   );
-// };
-
-// export default Home;

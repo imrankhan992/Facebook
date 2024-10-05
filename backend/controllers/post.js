@@ -15,7 +15,7 @@ exports.getPostController = async (req, res) => {
     try {
 
         const { page = 1, limit = 5 } = req.query;
-        const posts = await Posts.find()
+        const posts = await Posts.find().populate("user", "first_name last_name picture _id")
             .skip((page - 1) * limit)
             .limit(limit)
             .lean();

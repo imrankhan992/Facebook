@@ -7,7 +7,7 @@ import Post from "./Post";
 const CreatePost = ({style}) => {
   const user = useSelector((state) => state.user);
   return (
-    <div style={style} className="w-full flex items-center justify-center mt-20 md:mt-0 md:px-[1.1rem]">
+    <div style={style} className="w-full flex items-center justify-center mt-20 md:mt-0">
       <div className="bg-white p-2 min-w-[100%] rounded-lg border-shadow">
         <div className="flex items-center justify-start gap-3 w-full">
           <ProfileAvatar />

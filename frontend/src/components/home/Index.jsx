@@ -18,10 +18,7 @@ import SinglePost from "./ShowPosts/SinglePost";
 import CreatePost from "./Posts/CreatePost";
 import Stories from "./Stories/Index";
 import { getPosts } from "@/apis/api";
-
-
 export const DynamicListContext = createContext({});
-
 const Home = () => {
   const listRef = useRef(null);
   const sizeMap = useRef({});
@@ -52,8 +49,10 @@ const Home = () => {
   const parentRef = useRef(null);
 
   const setSize = useCallback((index, size) => {
+    
     if (sizeMap.current[index] !== size) {
       sizeMap.current = { ...sizeMap.current, [index]: size };
+      
       if (listRef.current) {
         listRef.current.resetAfterIndex(index);
       }
@@ -64,7 +63,7 @@ const Home = () => {
 
   // Monitor the last item being rendered
   const isItemLoaded = (index) => index < allPosts.length;
-console.log(isItemLoaded,"this is is item loaded")
+
   // Check if last post is rendered, then fetch new posts
   const loadMoreItems = useCallback(
     (visibleStartIndex, visibleStopIndex) => {
@@ -125,7 +124,7 @@ console.log(isItemLoaded,"this is is item loaded")
 
           {/* Middle Section */}
           <div
-            className="flex-1 md:px-[4rem] px-4 shadow-none overflow-y-auto pt-16 bg-[#F0F2F5] scrollbar-hide h-screen"
+            className="flex-1 md:px-[4rem]  shadow-none overflow-y-auto pt-16 bg-[#F0F2F5] scrollbar-hide h-screen"
             ref={parentRef}
           >
             {!user?.verified && <ResendEmailVerification />}
@@ -144,8 +143,7 @@ console.log(isItemLoaded,"this is is item loaded")
                     onItemsRendered={({ visibleStopIndex }) =>
                       loadMoreItems(0, visibleStopIndex)
                     }
-                   
-                    className="List"
+                    className=" scrollbar-hide"
                     style={{
                       overflowX: "hidden",
                       overflowY: "auto",
@@ -161,17 +159,13 @@ console.log(isItemLoaded,"this is is item loaded")
                           post={post}
                           style={style}
                           index={index}
+                          user={user}
                         />
-                        
                       );
-
                     }}
-                    
                   </VariableSizeList>
                 )}
-                
               </AutoSizer>
-              
             ) : isLoading ? (
               <div className="">Loading...</div>
             ) : isError ? (
@@ -179,7 +173,6 @@ console.log(isItemLoaded,"this is is item loaded")
             ) : (
               <div>No posts available</div>
             )}
-           
           </div>
 
           {/* Right Section */}

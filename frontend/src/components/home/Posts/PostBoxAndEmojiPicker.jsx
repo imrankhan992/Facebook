@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import AddToPostSection from "./AddToPostSection";
 import PreviewImage from "./PreviewImage";
 import Emoji from "./Emoji";
+import { Textarea } from "@/components/ui/textarea";
+import EmojiPicker from "emoji-picker-react";
 
 const PostBoxAndEmojiPicker = ({
   user,
@@ -105,16 +107,16 @@ const PostBoxAndEmojiPicker = ({
 
   return (
     <div
-      className="w-full justify-between flex flex-col   px-2 overflow-auto"
+      className="w-full justify-between flex flex-col z-0  px-2 overflow-auto"
       ref={bgRef}
     >
-      <textarea
+      <Textarea
         onChange={(e) => setPostText(e.target.value)}
         value={postText}
         placeholder={`What's on your mind, ${
           user?.first_name + " " + user?.last_name || "Guest"
         }?`}
-        className={`w-full focus:outline-none ${
+        className={`w-full  focus:outline-none ${
           postText.length < 84 && background ? "text-center" : ""
         }  bg-transparent  placeholder:text-2xl resize-none placeholder:text-black/65 bg-none ${
           showImageUpload
@@ -136,12 +138,25 @@ const PostBoxAndEmojiPicker = ({
         }}
       />
 
-      <div>
+      <div className="z-50 relative">
+        <div className="absolute right-0 !-top-[15.5rem]  z-50   group">
+          {showPicker && (
+            <EmojiPicker
+              previewConfig={{ showPreview: false }}
+              searchDisabled={true}
+              onEmojiClick={handleEmoji}
+              width="250px"
+              height="250px"
+              disableAutoFocus={true}
+              emojiStyle="Facebook"
+              className="popover-shadow "
+            />
+          )}
+        </div>
         {!showImageUpload && (
           <Emoji
             handleEmojiPickerClick={handleEmojiPickerClick}
             handleEmoji={handleEmoji}
-            ref={pickerRef}
             showPicker={showPicker}
             type={"type1"}
             showImageUpload={showImageUpload}
@@ -151,7 +166,6 @@ const PostBoxAndEmojiPicker = ({
             selectedBg={selectedBg}
             setSelectedBg={setSelectedBg}
             postBackgrounds={postBackgrounds}
-            bgRef={bgRef}
           />
         )}
         {showImageUpload && (
@@ -159,7 +173,6 @@ const PostBoxAndEmojiPicker = ({
             <Emoji
               handleEmojiPickerClick={handleEmojiPickerClick}
               handleEmoji={handleEmoji}
-              ref={pickerRef}
               showPicker={showPicker}
               type={"type2"}
               showImageUpload={showImageUpload}
@@ -169,7 +182,6 @@ const PostBoxAndEmojiPicker = ({
               selectedBg={selectedBg}
               setSelectedBg={setSelectedBg}
               postBackgrounds={postBackgrounds}
-              bgRef={bgRef}
             />
           </>
         )}
